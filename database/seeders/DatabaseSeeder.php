@@ -14,17 +14,17 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // Buat admin user untuk login ke dashboard
-        // Email: admin@portfolio.com | Password: password
+        // Email: ariefsidik2016@gmail.com | Password: arfwjn123
         User::firstOrCreate(
-            ['email' => 'admin@portfolio.com'],
+            ['email' => 'ariefsidik2016@gmail.com'],
             [
-                'name'              => 'Admin Portfolio',
-                'password'          => Hash::make('password'),
+                'name'              => 'Arief Sidik Wijayanto',
+                'password'          => Hash::make('arfwjn123'),
                 'email_verified_at' => now(),
             ]
         );
 
-        $this->command->info('Admin user dibuat: admin@portfolio.com / password');
+        $this->command->info('Admin user dibuat: ariefsidik2016@gmail.com / arfwjn123');
         $this->command->warn(' Segera ganti password setelah login pertama!');
     }
 }

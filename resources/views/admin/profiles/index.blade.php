@@ -38,7 +38,7 @@
                                 </td>
                                 <td class="px-8 py-5">
                                     <div class="flex flex-wrap gap-2">
-                                        @foreach ($profile->social_links ?? [] as $platform => $link)
+                                        @foreach ($profile->social_links as $platform => $link)
                                             @if ($link)
                                                 <a href="{{ $link }}" target="_blank"
                                                    class="px-3 py-1 bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300 rounded-full text-xs font-medium hover:bg-emerald-200 transition-colors">

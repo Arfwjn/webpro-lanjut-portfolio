@@ -5,10 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
-{
-    /**
-     * Run the migrations.
-     */
+{    
     public function up(): void
     {
         Schema::create('profiles', function (Blueprint $table) {
@@ -16,14 +13,11 @@ return new class extends Migration
             $table->string('name');
             $table->text('bio');
             $table->longText('detailed_bio')->nullable();
-            $table->json('social_links');
+            $table->json('social_links')->nullable()->default('[]');
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('profiles');

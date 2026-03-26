@@ -19,9 +19,22 @@ class Profile extends Model
             'social_links' => 'array',
         ];
     }
+    
+    protected $attributes = [
+        'social_links' => '[]',
+    ];
 
     public function projects()
     {
         return $this->hasMany(Project::class);
+    }
+
+    public function getSocialLinksAttribute($value): array
+    {
+        if (is_null($value)) {
+            return [];
+        }
+        $decoded = json_decode($value, true);
+        return is_array($decoded) ? $decoded : [];
     }
 }

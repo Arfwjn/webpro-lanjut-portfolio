@@ -6,7 +6,7 @@
 <div class="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-slate-900 py-20 px-4">
     <div class="w-full max-w-md">
         <div class="text-center mb-10">
-            <h1 class="font-lexend text-4xl font-bold bg-gradient-to-r from-emerald-500 to-emerald-600 bg-clip-text text-transparent mb-2">
+            <h1 class="font-lexend text-4xl font-bold bg-gradient-to-r from-emerald-500 to-emerald-600 bg-clip-text text-transparent mb-2 leading-relaxed pb-2">
                 Admin Login
             </h1>
             <p class="text-gray-500 dark:text-gray-400">Masuk untuk mengelola portfolio</p>

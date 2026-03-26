@@ -19,8 +19,8 @@
         {{-- Stats Cards --}}
         <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
 
-            <div class="bg-white dark:bg-slate-800 p-7 rounded-3xl shadow-lg border border-gray-100 dark:border-slate-700
-                        hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300">
+            <div class="bg-white dark:bg-slate-800 p-7 rounded-3xl shadow-lg
+                      hover:shadow-sky-500/20 hover:-translate-y-0.5 transition-all duration-300">
                 <div class="flex items-center gap-4">
                     <div class="w-14 h-14 bg-emerald-100 dark:bg-emerald-900/40 rounded-2xl flex items-center justify-center">
                         <svg class="w-7 h-7 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -34,8 +34,8 @@
                 </div>
             </div>
 
-            <div class="bg-white dark:bg-slate-800 p-7 rounded-3xl shadow-lg border border-gray-100 dark:border-slate-700
-                        hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300">
+            <div class="bg-white dark:bg-slate-800 p-7 rounded-3xl shadow-lg
+                      hover:shadow-sky-500/20 hover:-translate-y-0.5 transition-all duration-300">
                 <div class="flex items-center gap-4">
                     <div class="w-14 h-14 bg-sky-100 dark:bg-sky-900/40 rounded-2xl flex items-center justify-center">
                         <svg class="w-7 h-7 text-sky-600 dark:text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -45,6 +45,23 @@
                     <div>
                         <p class="text-3xl font-black text-gray-900 dark:text-white">{{ $projectsCount }}</p>
                         <p class="text-sm text-gray-500 dark:text-gray-400 font-medium">Projects</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white dark:bg-slate-800 p-7 rounded-3xl shadow-lg
+                      hover:shadow-sky-500/20 hover:-translate-y-0.5 transition-all duration-300">
+                <div class="flex items-center gap-4">
+                    <div class="w-14 h-14 bg-sky-100 dark:bg-sky-900/40 rounded-2xl flex items-center justify-center">
+                        <svg class="w-7 h-7 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="text-3xl font-black text-gray-900 dark:text-white">
+                            {{ $profilesCount + $projectsCount }}
+                        </p>
+                        <p class="text-sm text-gray-500 dark:text-gray-400 font-medium">Total Konten</p>
                     </div>
                 </div>
             </div>
@@ -63,23 +80,7 @@
                         <p class="text-white/70 text-sm">Lihat publik ↗</p>
                     </div>
                 </div>
-            </a>
-
-            <div class="bg-white dark:bg-slate-800 p-7 rounded-3xl shadow-lg border border-gray-100 dark:border-slate-700">
-                <div class="flex items-center gap-4">
-                    <div class="w-14 h-14 bg-purple-100 dark:bg-purple-900/40 rounded-2xl flex items-center justify-center">
-                        <svg class="w-7 h-7 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
-                        </svg>
-                    </div>
-                    <div>
-                        <p class="text-3xl font-black text-gray-900 dark:text-white">
-                            {{ $profilesCount + $projectsCount }}
-                        </p>
-                        <p class="text-sm text-gray-500 dark:text-gray-400 font-medium">Total Konten</p>
-                    </div>
-                </div>
-            </div>
+            </a>            
 
         </div>
 
