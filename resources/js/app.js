@@ -1,200 +1,137 @@
 import "./bootstrap";
 
-// Dark/Light Mode Toggle - Persist in localStorage
+// ─── Init on DOM ready ────────────────────────────────────────────────────────
 document.addEventListener("DOMContentLoaded", () => {
+    // ── Dark / Light Mode Toggle ──────────────────────────────────────────────
     const html = document.documentElement;
-    const themeToggle = document.getElementById("theme-toggle");
-    const sunIcon = document.getElementById("sun-icon");
+    const toggle = document.getElementById("theme-toggle");
     const moonIcon = document.getElementById("moon-icon");
+    const sunIcon = document.getElementById("sun-icon");
 
-    // Load saved theme
-    const savedTheme =
-        localStorage.getItem("theme") ||
-        (window.matchMedia("(prefers-color-scheme: dark)").matches
-            ? "dark"
-            : "light");
-    html.classList.toggle("dark", savedTheme === "dark");
+    // Ambil preferensi tersimpan, atau ikuti OS preference
+    const savedTheme = localStorage.getItem("theme");
+    const systemDark = window.matchMedia(
+        "(prefers-color-scheme: dark)",
+    ).matches;
+    const isDark = savedTheme ? savedTheme === "dark" : systemDark;
 
-    if (savedTheme === "dark") {
-        sunIcon.classList.remove("hidden");
-        moonIcon.classList.add("hidden");
+    applyTheme(isDark);
+
+    toggle?.addEventListener("click", () => {
+        const nowDark = html.classList.contains("dark");
+        applyTheme(!nowDark);
+        localStorage.setItem("theme", !nowDark ? "dark" : "light");
+    });
+
+    function applyTheme(dark) {
+        html.classList.toggle("dark", dark);
     }
 
-    // Toggle handler
-    if (themeToggle) {
-        themeToggle.addEventListener("click", () => {
-            const isDark = html.classList.contains("dark");
-            const newTheme = isDark ? "light" : "dark";
-
-            html.classList.toggle("dark");
-            localStorage.setItem("theme", newTheme);
-
-            // Toggle icons
-            sunIcon.classList.toggle("hidden");
-            moonIcon.classList.toggle("hidden");
+    // ── Skill tag hover effect ────────────────────────────────────────────────
+    document.querySelectorAll(".skill-hover").forEach((el) => {
+        el.style.transition = "all 0.2s ease";
+        el.addEventListener("mouseenter", () => {
+            el.style.transform = "scale(1.08)";
         });
-    }
-
-    // "Skill" hover interaction
-    const skillSpans = document.querySelectorAll(".skill-hover");
-    skillSpans.forEach((span) => {
-        span.addEventListener("mouseenter", () => {
-            span.style.transform = "scale(1.1)";
-            span.style.color = "#10b981";
-        });
-        span.addEventListener("mouseleave", () => {
-            span.style.transform = "scale(1)";
-            span.style.color = "";
+        el.addEventListener("mouseleave", () => {
+            el.style.transform = "scale(1)";
         });
     });
 
-    // Custom Cursor
-    const cursor = document.createElement("div");
-    cursor.id = "custom-cursor";
-    cursor.style.cssText = `
-        position: fixed;
-        width: var(--cursor-size, 20px);
-        height: var(--cursor-size, 20px);
-        background: radial-gradient(circle, #10b981 0%, transparent 70%);
-        border-radius: 50%;
-        pointer-events: none;
-        z-index: 9999;
-        mix-blend-mode: difference;
-        transition: transform 0.1s ease;
-        will-change: transform;
-    `;
-    document.body.appendChild(cursor);
+    // ── Custom Cursor (emerald dot) ───────────────────────────────────────────
+    const cursorDot = document.createElement("div");
+    Object.assign(cursorDot.style, {
+        position: "fixed",
+        width: "16px",
+        height: "16px",
+        background:
+            "radial-gradient(circle, #10b981 0%, #10b98180 60%, transparent 100%)",
+        borderRadius: "50%",
+        pointerEvents: "none",
+        zIndex: "9999",
+        mixBlendMode: "difference",
+        transition: "transform 0.15s ease, opacity 0.2s ease",
+        willChange: "transform",
+        transform: "translate(-50%, -50%)",
+        opacity: "0",
+    });
+    document.body.appendChild(cursorDot);
 
-    let mouseX = 0,
-        mouseY = 0;
     document.addEventListener("mousemove", (e) => {
-        mouseX = e.clientX;
-        mouseY = e.clientY;
-        cursor.style.left = mouseX + "px";
-        cursor.style.top = mouseY + "px";
+        cursorDot.style.left = e.clientX + "px";
+        cursorDot.style.top = e.clientY + "px";
+        cursorDot.style.opacity = "1";
+    });
+    document.addEventListener("mouseleave", () => {
+        cursorDot.style.opacity = "0";
     });
 
-    // React to project cards
-    const projectCards = document.querySelectorAll(".custom-cursor-project");
-    projectCards.forEach((card) => {
-        card.addEventListener("mouseenter", () => {
-            cursor.style.transform = "scale(2)";
-            cursor.style.setProperty("--cursor-size", "24px");
+    // Enlarge cursor on project cards
+    document.querySelectorAll(".custom-cursor-project").forEach((card) => {
+        card.addEventListener(
+            "mouseenter",
+            () =>
+                (cursorDot.style.transform =
+                    "translate(-50%, -50%) scale(2.5)"),
+        );
+        card.addEventListener(
+            "mouseleave",
+            () =>
+                (cursorDot.style.transform = "translate(-50%, -50%) scale(1)"),
+        );
+    });
+
+    // ── Smooth scroll for anchor links ───────────────────────────────────────
+    document.querySelectorAll('a[href^="#"]').forEach((a) => {
+        a.addEventListener("click", (e) => {
+            const target = document.querySelector(a.getAttribute("href"));
+            if (target) {
+                e.preventDefault();
+                target.scrollIntoView({ behavior: "smooth", block: "start" });
+            }
         });
-        card.addEventListener("mouseleave", () => {
-            cursor.style.transform = "scale(1)";
-            cursor.style.setProperty("--cursor-size", "20px");
-        });
     });
 
-    // Floating animations (Framer Motion style dengan CSS)
-    const floatElements = document.querySelectorAll(".animate-float");
-    floatElements.forEach((el) => {
-        el.style.animation = "float 6s ease-in-out infinite";
-    });
+    // ── Scroll-triggered reveal animation ────────────────────────────────────
+    if ("IntersectionObserver" in window) {
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add(
+                            "opacity-100",
+                            "translate-y-0",
+                        );
+                        entry.target.classList.remove(
+                            "opacity-0",
+                            "translate-y-8",
+                        );
+                        observer.unobserve(entry.target);
+                    }
+                });
+            },
+            { threshold: 0.1, rootMargin: "0px 0px -40px 0px" },
+        );
 
-    // Form validation real-time
-    const contactForm = document.getElementById("contact-form");
-    if (contactForm) {
-        contactForm.addEventListener("input", () => {
-            const inputs = contactForm.querySelectorAll(".contact-input");
-            let isValid = true;
-            inputs.forEach((input) => {
-                if (!input.checkValidity()) {
-                    input.classList.add(
-                        "border-red-500",
-                        "ring-2",
-                        "ring-red-500/50",
-                    );
-                    isValid = false;
-                } else {
-                    input.classList.remove(
-                        "border-red-500",
-                        "ring-2",
-                        "ring-red-500/50",
-                    );
-                    input.classList.add(
-                        "border-emerald-500",
-                        "ring-2",
-                        "ring-emerald-500/50",
-                    );
-                }
-            });
-            const submitBtn = contactForm.querySelector(
-                'button[type="submit"]',
+        document.querySelectorAll(".reveal").forEach((el) => {
+            el.classList.add(
+                "opacity-0",
+                "translate-y-8",
+                "transition-all",
+                "duration-700",
             );
-            submitBtn.disabled = !isValid;
+            observer.observe(el);
         });
     }
 
-    // Toast notifications (emilkowalski/skill style)
-    // Note: Requires npm install @emilkowalski/skill or similar
-    // Placeholder implementation
-    function showToast(message, type = "success") {
-        const toast = document.createElement("div");
-        toast.className = `fixed top-20 right-4 z-50 px-6 py-4 rounded-2xl shadow-2xl animate-slide-in text-white ${type === "success" ? "bg-emerald-500" : "bg-red-500"}`;
-        toast.textContent = message;
-        document.body.appendChild(toast);
-
-        setTimeout(() => {
-            toast.remove();
-        }, 4000);
-    }
-
-    // Listen for Laravel flash messages
-    document.addEventListener("livewire:init", () => {
-        // Livewire toast integration if used
-    });
+    // ── Auto-dismiss flash messages ───────────────────────────────────────────
+    setTimeout(() => {
+        document
+            .querySelectorAll("#flash-success, #flash-error")
+            .forEach((el) => {
+                el.style.transition = "opacity 0.4s ease";
+                el.style.opacity = "0";
+                setTimeout(() => el.remove(), 400);
+            });
+    }, 4000);
 });
-
-// Custom CSS animations
-const style = document.createElement("style");
-style.textContent = `
-    @keyframes float {
-        0%, 100% { transform: translateY(0px); }
-        50% { transform: translateY(-20px); }
-    }
-    
-    @keyframes slide-in-from-top {
-        from {
-            opacity: 0;
-            transform: translateY(-20px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-    
-    @keyframes pulse-hero {
-        0%, 100% { opacity: 0.2; transform: scale(1); }
-        50% { opacity: 0.4; transform: scale(1.05); }
-    }
-    
-    .glassmorphism {
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-    }
-    
-    .btn-emerald {
-        background: linear-gradient(to right, #10b981, #059669);
-        box-shadow: 0 10px 30px rgba(16, 185, 129, 0.3);
-    }
-    
-    .line-clamp-2 {
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-    }
-    
-    .line-clamp-3 {
-        display: -webkit-box;
-        -webkit-line-clamp: 3;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-    }
-`;
-document.head.appendChild(style);
-
-console.log("Portfolio JS loaded - Dark mode, cursor, animations ready!");

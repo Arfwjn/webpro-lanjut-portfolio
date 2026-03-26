@@ -4,12 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-#[Fillable(['name', 'bio', 'detailed_bio', 'social_links'])]
 class Profile extends Model
 {
-    /**
-     * The attributes that should be cast.
-     */
+    protected $fillable = [
+        'name',
+        'bio',
+        'detailed_bio',
+        'social_links',
+    ];
+
     protected function casts(): array
     {
         return [
@@ -17,5 +20,8 @@ class Profile extends Model
         ];
     }
 
-    // Komentar dalam bahasa Indonesia: Model Profil untuk portfolio
+    public function projects()
+    {
+        return $this->hasMany(Project::class);
+    }
 }

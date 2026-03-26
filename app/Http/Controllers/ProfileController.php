@@ -5,94 +5,80 @@ namespace App\Http\Controllers;
 use App\Models\Profile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Validation\Rule;
 
-/**
- * Controller untuk mengelola data profil pengguna.
- * Menggunakan Storage untuk penanganan gambar jika diperlukan.
- */
 class ProfileController extends Controller
 {
-    /**
-     * Menampilkan daftar profil.
-     */
+    // ─── PUBLIC ────────────────────────────────────────────────────────────────
+
     public function index()
     {
         $profiles = Profile::latest()->get();
+
+        if (request()->is('admin/*')) {
+            return view('admin.profiles.index', compact('profiles'));
+        }
+
         return view('profiles.index', compact('profiles'));
     }
 
-    /**
-     * Menampilkan form buat profil baru (admin).
-     */
-    public function create()
-    {
-        return view('admin.profiles.create');
-    }
-
-    /**
-     * Menyimpan profil baru.
-     */
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'bio' => 'required|string',
-            'detailed_bio' => 'nullable|string',
-            'social_links' => 'required|array',
-            'social_links.*' => 'nullable|url',
-        ]);
-
-        Profile::create($validated);
-
-        return redirect()->route('profiles.index')
-                        ->with('success', 'Profil berhasil dibuat.');
-    }
-
-    /**
-     * Menampilkan profil spesifik.
-     */
     public function show(Profile $profile)
     {
         return view('profiles.show', compact('profile'));
     }
 
-    /**
-     * Menampilkan form edit profil.
-     */
+    // ─── ADMIN ─────────────────────────────────────────────────────────────────
+
+    public function create()
+    {
+        return view('admin.profiles.create');
+    }
+
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'name'                  => 'required|string|max:255',
+            'bio'                   => 'required|string',
+            'detailed_bio'          => 'nullable|string',
+            'social_links'          => 'nullable|array',
+            'social_links.*'        => 'nullable|url',
+        ]);
+
+        $validated['social_links'] = array_filter($validated['social_links'] ?? []);
+
+        Profile::create($validated);
+
+        return redirect()->route('admin.profiles.index')
+            ->with('success', 'Profil berhasil dibuat.');
+    }
+
     public function edit(Profile $profile)
     {
         return view('admin.profiles.edit', compact('profile'));
     }
 
-    /**
-     * Update profil.
-     */
     public function update(Request $request, Profile $profile)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'bio' => 'required|string',
-            'detailed_bio' => 'nullable|string',
-            'social_links' => 'required|array',
+            'name'           => 'required|string|max:255',
+            'bio'            => 'required|string',
+            'detailed_bio'   => 'nullable|string',
+            'social_links'   => 'nullable|array',
             'social_links.*' => 'nullable|url',
         ]);
 
+        $validated['social_links'] = array_filter($validated['social_links'] ?? []);
+
         $profile->update($validated);
 
-        return redirect()->route('profiles.index')
-                        ->with('success', 'Profil berhasil diupdate.');
+        return redirect()->route('admin.profiles.index')
+            ->with('success', 'Profil berhasil diperbarui.');
     }
 
-    /**
-     * Hapus profil.
-     */
     public function destroy(Profile $profile)
     {
         $profile->delete();
 
-        return redirect()->route('profiles.index')
-                        ->with('success', 'Profil berhasil dihapus.');
+        return redirect()->route('admin.profiles.index')
+            ->with('success', 'Profil berhasil dihapus.');
     }
 }
-
