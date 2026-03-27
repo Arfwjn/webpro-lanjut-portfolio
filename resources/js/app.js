@@ -1,33 +1,21 @@
 import "./bootstrap";
 
-// ─── Init on DOM ready ────────────────────────────────────────────────────────
 document.addEventListener("DOMContentLoaded", () => {
-    // ── Dark / Light Mode Toggle ──────────────────────────────────────────────
     const html = document.documentElement;
     const toggle = document.getElementById("theme-toggle");
-    const moonIcon = document.getElementById("moon-icon");
-    const sunIcon = document.getElementById("sun-icon");
-
-    // Ambil preferensi tersimpan, atau ikuti OS preference
-    const savedTheme = localStorage.getItem("theme");
-    const systemDark = window.matchMedia(
-        "(prefers-color-scheme: dark)",
-    ).matches;
-    const isDark = savedTheme ? savedTheme === "dark" : systemDark;
-
-    applyTheme(isDark);
 
     toggle?.addEventListener("click", () => {
         const nowDark = html.classList.contains("dark");
-        applyTheme(!nowDark);
-        localStorage.setItem("theme", !nowDark ? "dark" : "light");
+        if (nowDark) {
+            html.classList.remove("dark");
+            localStorage.setItem("theme", "light");
+        } else {
+            html.classList.add("dark");
+            localStorage.setItem("theme", "dark");
+        }
     });
 
-    function applyTheme(dark) {
-        html.classList.toggle("dark", dark);
-    }
-
-    // ── Skill tag hover effect ────────────────────────────────────────────────
+    // Skill tag hover effect
     document.querySelectorAll(".skill-hover").forEach((el) => {
         el.style.transition = "all 0.2s ease";
         el.addEventListener("mouseenter", () => {
@@ -38,7 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    // ── Custom Cursor (emerald dot) ───────────────────────────────────────────
+    // Custom Cursor (emerald dot)
     const cursorDot = document.createElement("div");
     Object.assign(cursorDot.style, {
         position: "fixed",
@@ -66,22 +54,16 @@ document.addEventListener("DOMContentLoaded", () => {
         cursorDot.style.opacity = "0";
     });
 
-    // Enlarge cursor on project cards
     document.querySelectorAll(".custom-cursor-project").forEach((card) => {
-        card.addEventListener(
-            "mouseenter",
-            () =>
-                (cursorDot.style.transform =
-                    "translate(-50%, -50%) scale(2.5)"),
-        );
-        card.addEventListener(
-            "mouseleave",
-            () =>
-                (cursorDot.style.transform = "translate(-50%, -50%) scale(1)"),
-        );
+        card.addEventListener("mouseenter", () => {
+            cursorDot.style.transform = "translate(-50%, -50%) scale(2.5)";
+        });
+        card.addEventListener("mouseleave", () => {
+            cursorDot.style.transform = "translate(-50%, -50%) scale(1)";
+        });
     });
 
-    // ── Smooth scroll for anchor links ───────────────────────────────────────
+    // Smooth scroll for anchor links
     document.querySelectorAll('a[href^="#"]').forEach((a) => {
         a.addEventListener("click", (e) => {
             const target = document.querySelector(a.getAttribute("href"));
@@ -92,7 +74,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    // ── Scroll-triggered reveal animation ────────────────────────────────────
+    // Scroll-triggered reveal animation
     if ("IntersectionObserver" in window) {
         const observer = new IntersectionObserver(
             (entries) => {
@@ -124,7 +106,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // ── Auto-dismiss flash messages ───────────────────────────────────────────
+    // Auto-dismiss flash messages
     setTimeout(() => {
         document
             .querySelectorAll("#flash-success, #flash-error")

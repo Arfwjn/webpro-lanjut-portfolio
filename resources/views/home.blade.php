@@ -1,73 +1,204 @@
 @extends('layouts.app')
 
-@section('title', 'Portfolio - Full-Stack Developer')
+@section('title', ($profile ? $profile->name . ' - ' : '') . 'Portfolio')
 
 @section('content')
 
-{{-- HERO SECTION --}}
+{{-- HERO / PROFILE SECTION --}}
 <section id="hero" class="relative min-h-screen flex items-center justify-center overflow-hidden
                            bg-gradient-to-br from-slate-50 via-white to-emerald-50
                            dark:from-slate-950 dark:via-slate-900 dark:to-slate-900 pt-20">
 
     {{-- Background decorations --}}
-    <div class="absolute top-1/4 right-10 w-72 h-72 bg-emerald-400/10 dark:bg-emerald-500/5 rounded-full blur-3xl pointer-events-none"></div>
-    <div class="absolute bottom-1/4 left-10 w-96 h-96 bg-sky-400/10 dark:bg-sky-500/5 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="absolute w-96 h-96 right-10 mb-12 bg-gradient-to-br from-emerald-500 via-sky-500 to-purple-500 
+                                rounded-full blur-3xl pointer-events-none"></div>
 
-    <div class="relative container mx-auto px-6 text-center z-10">
-        <div class="max-w-4xl mx-auto">
+    <div class="relative container mx-auto px-6 z-10">
+        @if ($profile)
+            {{-- MODE PROFILE --}}
+            <div class="max-w-6xl mx-auto">
+                <div class="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
 
-            <span class="inline-block px-4 py-2 bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300 rounded-full text-sm font-semibold mb-8">
-                Available for work
-            </span>
+                    {{-- Avatar --}}
+                    <div class="flex-shrink-0">
+                        <div class="relative">
+                            {{-- Glow effect --}}
+                            <div class="absolute inset-0 w-36 h-36 bg-gradient-to-br from-emerald-500 via-sky-500 to-purple-500 
+                                rounded-full blur-3xl pointer-events-none"></div>
 
-            <h1 class="font-lexend text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black leading-tight mb-8
-                        bg-gradient-to-r from-emerald-500 via-sky-500 to-emerald-600
-                        bg-clip-text text-transparent">
-                Junior MLOps<br>& Data Engineer<br>
-            </h1>
+                            @if ($profile->avatar_url)
+                                <img src="{{ $profile->avatar_url }}"
+                                     alt="{{ $profile->name }}"
+                                     class="relative w-48 h-48 lg:w-64 lg:h-64 rounded-full object-cover
+                                            ring-4 ring-white dark:ring-slate-800
+                                            shadow-2xl">
+                            @else
+                                {{-- Placeholder dengan inisial --}}
+                                <div class="relative w-48 h-48 lg:w-64 lg:h-64 rounded-full
+                                            bg-gradient-to-br from-emerald-400 to-sky-500
+                                            flex items-center justify-center
+                                            ring-4 ring-white dark:ring-slate-800
+                                            shadow-2xl">
+                                    <span class="text-white font-lexend font-black text-5xl lg:text-7xl">
+                                        {{ $profile->initials }}
+                                    </span>
+                                </div>
+                            @endif
 
-            <p class="font-inter text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto mb-12 leading-relaxed">
-                Mengintegrasikan Artificial Intelligence (AI) ke dalam solusi perangkat lunak fungsional.
-            </p>
+                            {{-- Status badge --}}
+                            <div class="absolute bottom-3 right-3 bg-white dark:bg-slate-800 rounded-full px-3 py-1.5 shadow-lg flex items-center gap-1.5">
+                                <span class="w-2.5 h-2.5 bg-emerald-500 rounded-full animate-pulse"></span>
+                                <span class="text-xs font-semibold text-gray-700 dark:text-gray-300">Available</span>
+                            </div>
+                        </div>
+                    </div>
 
-            <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="#projects"
-                   class="inline-block px-10 py-4 bg-gradient-to-r from-emerald-500 to-emerald-600
-                          hover:from-emerald-600 hover:to-emerald-700
-                          text-white font-semibold text-lg rounded-2xl
-                          shadow-xl shadow-emerald-500/25 hover:shadow-emerald-500/40
-                          transition-all duration-300 hover:-translate-y-1">
-                    Lihat Projects
-                </a>
-                <a href="#contact"
-                   class="inline-block px-10 py-4 border-2 border-emerald-500 text-emerald-600 dark:text-emerald-400
-                          font-semibold text-lg rounded-2xl hover:bg-emerald-500 hover:text-white
-                          transition-all duration-300 hover:-translate-y-1">
-                    Hubungi Saya
-                </a>
+                    {{-- Profile Info --}}
+                    <div class="flex-1 text-center lg:text-left">
+                        <span class="inline-block px-4 py-2 bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300 rounded-full text-sm font-semibold mb-6">
+                            Hello, I'm
+                        </span>
+
+                        <h1 class="font-lexend text-5xl sm:text-6xl lg:text-7xl font-black leading-tight mb-4
+                                    text-gray-900 dark:text-white">
+                            {{ $profile->name }}
+                        </h1>
+
+                        <p class="font-inter text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto lg:mx-0 mb-8 leading-relaxed">
+                            {{ $profile->bio }}
+                        </p>
+
+                        {{-- Social Links --}}
+                        @if (!empty($profile->social_links))
+                            <div class="flex flex-wrap gap-3 justify-center lg:justify-start mb-10">
+                                @php
+                                    $socialIcons = [
+                                        'github'    => ['icon' => 'M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z', 'label' => 'GitHub'],
+                                        'linkedin'  => ['icon' => 'M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z', 'label' => 'LinkedIn'],
+                                        'twitter'   => ['icon' => 'M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z', 'label' => 'Twitter'],
+                                        'instagram' => ['icon' => 'M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z', 'label' => 'Instagram'],
+                                        'website'   => ['icon' => 'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z', 'label' => 'Website'],
+                                    ];
+                                @endphp
+                                @foreach ($profile->social_links as $platform => $link)
+                                    @if ($link && isset($socialIcons[$platform]))
+                                        <a href="{{ $link }}" target="_blank" rel="noopener"
+                                           class="group flex items-center gap-2 px-4 py-2.5
+                                                  bg-white dark:bg-slate-800
+                                                  border border-gray-200 dark:border-slate-700
+                                                  rounded-xl shadow-sm
+                                                  hover:border-emerald-500 hover:shadow-emerald-500/20
+                                                  hover:-translate-y-0.5 transition-all duration-300">
+                                            <svg class="w-4 h-4 text-gray-600 dark:text-gray-400 group-hover:text-emerald-500 transition-colors"
+                                                 viewBox="0 0 24 24" fill="currentColor">
+                                                <path d="{{ $socialIcons[$platform]['icon'] }}"/>
+                                            </svg>
+                                            <span class="text-sm font-medium text-gray-700 dark:text-gray-300 group-hover:text-emerald-600 dark:group-hover:text-emerald-400">
+                                                {{ $socialIcons[$platform]['label'] }}
+                                            </span>
+                                        </a>
+                                    @endif
+                                @endforeach
+                            </div>
+                        @endif
+
+                        <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                            <a href="#projects"
+                               class="inline-block px-10 py-4 bg-gradient-to-r from-emerald-500 to-emerald-600
+                                      hover:from-emerald-600 hover:to-emerald-700
+                                      text-white font-semibold text-lg rounded-2xl
+                                      shadow-xl shadow-emerald-500/25 hover:shadow-emerald-500/40
+                                      transition-all duration-300 hover:-translate-y-1">
+                                Lihat Projects
+                            </a>
+                            <a href="#contact"
+                               class="inline-block px-10 py-4 border-2 border-emerald-500 text-emerald-600 dark:text-emerald-400
+                                      font-semibold text-lg rounded-2xl hover:bg-emerald-500 hover:text-white
+                                      transition-all duration-300 hover:-translate-y-1">
+                                Hubungi Saya
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-        </div>
+        @else
+            {{--  MODE DEFAULT (Belum ada profil) --}}
+            <div class="text-center max-w-4xl mx-auto">
+                <span class="inline-block px-4 py-2 bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300 rounded-full text-sm font-semibold mb-8">
+                    Available for work
+                </span>
+
+                <h1 class="font-lexend text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black leading-tight mb-8
+                            bg-gradient-to-r from-emerald-500 via-sky-500 to-emerald-600
+                            bg-clip-text text-transparent">
+                    Junior MLOps<br>& Data Engineer
+                </h1>
+
+                <p class="font-inter text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto mb-12 leading-relaxed">
+                    Mengintegrasikan Artificial Intelligence (AI) ke dalam solusi perangkat lunak fungsional.
+                </p>
+
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="#projects"
+                       class="inline-block px-10 py-4 bg-gradient-to-r from-emerald-500 to-emerald-600
+                              hover:from-emerald-600 hover:to-emerald-700
+                              text-white font-semibold text-lg rounded-2xl
+                              shadow-xl shadow-emerald-500/25 hover:shadow-emerald-500/40
+                              transition-all duration-300 hover:-translate-y-1">
+                        Lihat Projects
+                    </a>
+                    <a href="#contact"
+                       class="inline-block px-10 py-4 border-2 border-emerald-500 text-emerald-600 dark:text-emerald-400
+                              font-semibold text-lg rounded-2xl hover:bg-emerald-500 hover:text-white
+                              transition-all duration-300 hover:-translate-y-1">
+                        Hubungi Saya
+                    </a>
+                </div>
+
+                @auth
+                    <p class="mt-8 text-gray-400 text-sm">
+                        💡 <a href="{{ route('admin.profiles.create') }}" class="text-emerald-500 hover:underline">Buat profil</a> untuk menampilkan data Anda di sini.
+                    </p>
+                @endauth
+            </div>
+        @endif
     </div>
 </section>
 
 
-{{-- IDENTITY / ABOUT - Bento Grid --}}
-<section id="identity" class="py-24 bg-white dark:bg-slate-900">
-    <div class="container mx-auto px-6">
-
-        {{-- About --}}
+{{-- IDENTITY / ABOUT --}}
+<section id="identity" class="py-24 bg-white dark:bg-slate-900 overflow-hidden">
+    <div class="container mx-auto px-6">        
+        {{-- Section Title --}}
         <div class="text-center mb-8">
-            <h2 class="font-lexend text-4xl lg:text-5xl font-bold mb-10
+            <h2 class="font-lexend text-4xl lg:text-5xl font-bold mb-2
                     bg-gradient-to-r from-gray-900 to-gray-600 dark:from-white dark:to-gray-300
-                    bg-clip-text text-transparent 
-                    leading-relaxed pb-2">
-                Tentang Saya
+                    bg-clip-text text-transparent leading-relaxed pb-4">
+                About Me
             </h2>
+            {{-- Garis dekoratif di bawah judul --}}
+            <div class="w-20 h-1.5 bg-gradient-to-r from-gray-900 to-gray-600 dark:from-white dark:to-gray-300 mx-auto rounded-full"></div>
         </div>
 
-        <div class="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+        {{-- Detailed Bio --}}
+        @if ($profile && $profile->detailed_bio)
+            <div class="max-w-4xl mx-auto mb-20 relative">
+                {{-- Dekorasi Quote Mark --}}
+                <span class="absolute -top-10 -left-8 text-8xl text-gray-100 dark:text-slate-800 font-serif -z-10 select-none">“</span>
+                <div class="relative">
+                    <p class="text-xl md:text-2xl text-gray-600 dark:text-gray-300 leading-relaxed font-medium italic text-center md:text-left">
+                        {{ $profile->detailed_bio }}
+                    </p>
+                    {{-- Garis Horizontal Setengah Lebar (Estetik) --}}
+                    <div class="mt-8 flex justify-center md:justify-start">
+                        <div class="w-1/2 md:w-1/3 h-px bg-gradient-to-r from-emerald-500 to-transparent"></div>
+                    </div>
+                </div>
+            </div>
+        @endif
 
+        <div class="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
             {{-- Experience --}}
             <div class="group bg-gradient-to-br from-emerald-50 to-emerald-100
                         dark:from-slate-800 dark:to-slate-700
@@ -91,10 +222,6 @@
                     <li class="flex items-start gap-3">
                         <span class="w-2 h-2 bg-emerald-500 rounded-full mt-2 flex-shrink-0"></span>
                         <span class="text-sm leading-relaxed">Machine Learning Specialist</span>
-                    </li>
-                    <li class="flex items-start gap-3">
-                        <span class="w-2 h-2 bg-emerald-500 rounded-full mt-2 flex-shrink-0"></span>
-                        <span class="text-sm leading-relaxed">1+ tahun pengalaman</span>
                     </li>
                 </ul>
             </div>
@@ -142,8 +269,7 @@
                 <h3 class="font-lexend text-xl font-bold mb-4 text-purple-700 dark:text-purple-300">Interests</h3>
                 <div class="grid grid-cols-2 gap-2">
                     @foreach (['Machine Learning', 'Deep Learning', 'MLOps', 'Data Science', 'AI/LLM', 'Cloud'] as $interest)
-                        <span class="px-3 py-2 bg-white/60 dark:bg-slate-600/60 backdrop-blur-sm rounded-xl text-xs text-center font-medium
-                                     text-gray-700 dark:text-gray-300">
+                        <span class="px-3 py-2 bg-white/60 dark:bg-slate-600/60 backdrop-blur-sm rounded-xl text-xs text-center font-medium text-gray-700 dark:text-gray-300">
                             {{ $interest }}
                         </span>
                     @endforeach
@@ -151,25 +277,19 @@
             </div>
 
             {{-- Stats --}}
-            <div class="md:col-span-2 group bg-gradient-to-r from-emerald-500 to-sky-500
-                        p-10 rounded-3xl hover:scale-[1.02] transition-all duration-500
-                        shadow-lg hover:shadow-sky-500/20 border border-emerald-100/50 dark:border-slate-600">
-                
-                <div class="absolute -right-10 -top-10 w-40 h-40 bg-white/10 rounded-full blur-3xl group-hover:bg-white/20 transition-all duration-500"></div>
-
+            <div class="md:col-span-2 relative overflow-hidden bg-gradient-to-r from-emerald-500 to-sky-500
+                        p-10 rounded-3xl hover:scale-[1.02] transition-all duration-500 shadow-lg hover:shadow-sky-500/20 
+                        border border-emerald-100/50 dark:border-slate-600">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8 h-full items-center relative z-10">
                     @foreach ([['1+', 'Tahun Pengalaman'], ['10+', 'Proyek Selesai'], ['5+', 'Klien Puas']] as [$num, $label])
                         <div class="text-center text-white p-4 rounded-2xl transition-transform duration-300 hover:scale-105">
-                            <p class="font-lexend text-6xl lg:text-5xl font-black leading-none mb-1 tracking-tighter drop-shadow-md">
-                                {{ $num }}
-                            </p>
-                            <p class="text-sm font-semibold opacity-90 tracking-wide drop-shadow-sm">
-                                {{ $label }}
-                            </p>
+                            <p class="font-lexend text-5xl font-black leading-none mb-1 tracking-tighter drop-shadow-md">{{ $num }}</p>
+                            <p class="text-sm font-semibold opacity-90 tracking-wide">{{ $label }}</p>
                         </div>
                     @endforeach
                 </div>
             </div>
+
         </div>
     </div>
 </section>
@@ -180,11 +300,11 @@
     <div class="container mx-auto px-6">
 
         <div class="text-center mb-16">
-            <h2 class="font-lexend text-4xl lg:text-5xl font-bold mb-4
-                        bg-gradient-to-r from-emerald-500 to-emerald-600 bg-clip-text text-transparent 
-                        leading-relaxed pb-2">
+            <h2 class="font-lexend text-4xl lg:text-5xl font-bold mb-2
+                        bg-gradient-to-r from-emerald-500 to-emerald-600 bg-clip-text text-transparent leading-relaxed pb-4">
                 Projects
             </h2>
+            <div class="w-20 h-1.5 bg-emerald-500 mx-auto rounded-full mb-8"></div>
             <p class="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
                 Proyek terbaik yang pernah saya kerjakan.
             </p>
@@ -194,11 +314,10 @@
             @forelse ($projects as $project)
                 <div class="group bg-white dark:bg-slate-800 rounded-3xl overflow-hidden
                              shadow-lg hover:shadow-2xl hover:-translate-y-2
-                             transition-all duration-500 cursor-pointer
+                             transition-all duration-500 hover:shadow-sky-500/20 cursor-pointer
                              border border-gray-100 dark:border-slate-700 custom-cursor-project"
                      onclick="window.location='{{ route('projects.show', $project) }}'">
 
-                    {{-- Image --}}
                     <div class="h-48 bg-gradient-to-br from-emerald-400 to-sky-500 relative overflow-hidden">
                         @if ($project->image_path)
                             <img src="{{ Storage::url($project->image_path) }}"
@@ -216,7 +335,6 @@
                         </div>
                     </div>
 
-                    {{-- Content --}}
                     <div class="p-7">
                         <h3 class="font-lexend text-xl font-bold mb-3 group-hover:text-emerald-500 transition-colors line-clamp-1">
                             {{ $project->title }}
@@ -239,35 +357,22 @@
                         </div>
                         <div class="flex gap-4 pt-3 border-t border-gray-100 dark:border-slate-700">
                             @if ($project->live_link)
-                                <a href="{{ $project->live_link }}" target="_blank"
-                                   onclick="event.stopPropagation()"
-                                   class="text-sm text-emerald-500 hover:text-emerald-600 font-semibold flex items-center gap-1">
-                                    Live ↗
-                                </a>
+                                <a href="{{ $project->live_link }}" target="_blank" onclick="event.stopPropagation()"
+                                   class="text-sm text-emerald-500 hover:text-emerald-600 font-semibold">Live ↗</a>
                             @endif
                             @if ($project->github_link)
-                                <a href="{{ $project->github_link }}" target="_blank"
-                                   onclick="event.stopPropagation()"
-                                   class="text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 font-semibold flex items-center gap-1">
-                                    GitHub ↗
-                                </a>
+                                <a href="{{ $project->github_link }}" target="_blank" onclick="event.stopPropagation()"
+                                   class="text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 font-semibold">GitHub ↗</a>
                             @endif
                         </div>
                     </div>
                 </div>
             @empty
                 <div class="col-span-full text-center py-24">
-                    <div class="w-20 h-20 bg-gray-100 dark:bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <svg class="w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
-                        </svg>
-                    </div>
                     <p class="text-xl text-gray-500 dark:text-gray-400">
                         Belum ada proyek.
                         @auth
-                            <a href="{{ route('admin.projects.create') }}" class="text-emerald-500 hover:underline ml-1 font-semibold">
-                                Tambah sekarang?
-                            </a>
+                            <a href="{{ route('admin.projects.create') }}" class="text-emerald-500 hover:underline ml-1 font-semibold">Tambah sekarang?</a>
                         @endauth
                     </p>
                 </div>
@@ -284,7 +389,6 @@
                 </a>
             </div>
         @endif
-
     </div>
 </section>
 
@@ -294,10 +398,11 @@
     <div class="container mx-auto px-6">
 
         <div class="text-center mb-16">
-            <h2 class="font-lexend text-4xl lg:text-5xl font-bold mb-4
-                        bg-gradient-to-r from-purple-500 to-emerald-500 bg-clip-text text-transparent leading-relaxed pb-2">
+            <h2 class="font-lexend text-4xl lg:text-5xl font-bold mb-2
+                        bg-gradient-to-r from-purple-500 to-emerald-500 bg-clip-text text-transparent leading-relaxed pb-4">
                 ML & Deep Learning Journey
             </h2>
+            <div class="w-20 h-1.5 bg-gradient-to-r from-purple-500 to-emerald-500 mx-auto rounded-full mb-8"></div>
             <p class="text-lg text-gray-600 dark:text-gray-300 max-w-xl mx-auto">
                 Perjalanan belajar machine learning saya dari dasar hingga production.
             </p>
@@ -374,7 +479,6 @@
                 @endforeach
             </div>
         </div>
-
     </div>
 </section>
 
@@ -382,98 +486,59 @@
 {{-- CONTACT SECTION --}}
 <section id="contact" class="py-24 bg-gray-50 dark:bg-slate-950">
     <div class="container mx-auto px-6 max-w-2xl">
-
         <div class="text-center mb-16">
-            <h2 class="font-lexend text-4xl lg:text-5xl font-bold mb-4
-                        bg-gradient-to-r from-emerald-500 to-emerald-600 bg-clip-text text-transparent leading-relaxed pb-2">
+            <h2 class="font-lexend text-4xl lg:text-5xl font-bold mb-2
+                        bg-gradient-to-r from-emerald-500 to-emerald-600 bg-clip-text text-transparent leading-relaxed pb-4">
                 Let's Talk
             </h2>
+            <div class="w-20 h-1.5 bg-emerald-500 mx-auto rounded-full mb-8"></div>
             <p class="text-lg text-gray-600 dark:text-gray-300">
                 Punya proyek menarik? Mari berkolaborasi dan wujudkan idemu!
             </p>
         </div>
 
         <div class="bg-white dark:bg-slate-800 p-10 md:p-12 rounded-3xl shadow-2xl border border-gray-100 dark:border-slate-700">
-
             @if (session('success'))
                 <div class="mb-8 p-5 bg-emerald-50 dark:bg-emerald-900/30 border border-emerald-200 dark:border-emerald-800 rounded-2xl">
-                    <p class="text-emerald-700 dark:text-emerald-300 font-medium">
-                        ✅ {{ session('success') }}
-                    </p>
+                    <p class="text-emerald-700 dark:text-emerald-300 font-medium">✅ {{ session('success') }}</p>
                 </div>
             @endif
 
-            <form id="contact-form"
-                  method="POST"
-                  action="{{ route('contact.store') }}"
-                  class="space-y-6">
+            <form method="POST" action="{{ route('contact.store') }}" class="space-y-6">
                 @csrf
-
                 <div>
-                    <label for="contact-name"
-                           class="block text-sm font-semibold mb-2 text-gray-700 dark:text-gray-300">
-                        Nama Lengkap *
-                    </label>
-                    <input type="text"
-                           id="contact-name"
-                           name="name"
-                           value="{{ old('name') }}"
-                           required
-                           class="contact-input w-full px-5 py-4 rounded-2xl
-                                  bg-gray-50 dark:bg-slate-700
+                    <label class="block text-sm font-semibold mb-2 text-gray-700 dark:text-gray-300">Nama Lengkap *</label>
+                    <input type="text" name="name" value="{{ old('name') }}" required
+                           class="w-full px-5 py-4 rounded-2xl bg-gray-50 dark:bg-slate-700
                                   border-2 border-gray-200 dark:border-slate-600
                                   focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/20
                                   outline-none transition-all duration-300 text-base
                                   @error('name') border-red-500 @enderror"
                            placeholder="Nama Anda">
-                    @error('name')
-                        <p class="text-red-500 text-sm mt-1.5">{{ $message }}</p>
-                    @enderror
+                    @error('name') <p class="text-red-500 text-sm mt-1.5">{{ $message }}</p> @enderror
                 </div>
-
                 <div>
-                    <label for="contact-email"
-                           class="block text-sm font-semibold mb-2 text-gray-700 dark:text-gray-300">
-                        Email *
-                    </label>
-                    <input type="email"
-                           id="contact-email"
-                           name="email"
-                           value="{{ old('email') }}"
-                           required
-                           class="contact-input w-full px-5 py-4 rounded-2xl
-                                  bg-gray-50 dark:bg-slate-700
+                    <label class="block text-sm font-semibold mb-2 text-gray-700 dark:text-gray-300">Email *</label>
+                    <input type="email" name="email" value="{{ old('email') }}" required
+                           class="w-full px-5 py-4 rounded-2xl bg-gray-50 dark:bg-slate-700
                                   border-2 border-gray-200 dark:border-slate-600
                                   focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/20
                                   outline-none transition-all duration-300 text-base
                                   @error('email') border-red-500 @enderror"
                            placeholder="email@contoh.com">
-                    @error('email')
-                        <p class="text-red-500 text-sm mt-1.5">{{ $message }}</p>
-                    @enderror
+                    @error('email') <p class="text-red-500 text-sm mt-1.5">{{ $message }}</p> @enderror
                 </div>
-
                 <div>
-                    <label for="contact-message"
-                           class="block text-sm font-semibold mb-2 text-gray-700 dark:text-gray-300">
-                        Pesan *
-                    </label>
-                    <textarea id="contact-message"
-                              name="message"
-                              rows="6"
-                              required
-                              class="contact-input w-full px-5 py-4 rounded-2xl
-                                     bg-gray-50 dark:bg-slate-700
+                    <label class="block text-sm font-semibold mb-2 text-gray-700 dark:text-gray-300">Pesan *</label>
+                    <textarea name="message" rows="6" required
+                              class="w-full px-5 py-4 rounded-2xl bg-gray-50 dark:bg-slate-700
                                      border-2 border-gray-200 dark:border-slate-600
                                      focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/20
                                      outline-none transition-all duration-300 text-base resize-vertical
                                      @error('message') border-red-500 @enderror"
                               placeholder="Ceritakan tentang proyek atau ide Anda...">{{ old('message') }}</textarea>
-                    @error('message')
-                        <p class="text-red-500 text-sm mt-1.5">{{ $message }}</p>
-                    @enderror
+                    @error('message') <p class="text-red-500 text-sm mt-1.5">{{ $message }}</p> @enderror
                 </div>
-
                 <button type="submit"
                         class="w-full bg-gradient-to-r from-emerald-500 to-emerald-600
                                hover:from-emerald-600 hover:to-emerald-700
@@ -482,10 +547,8 @@
                                transition-all duration-300 hover:-translate-y-1">
                     Kirim Pesan
                 </button>
-
             </form>
         </div>
-
     </div>
 </section>
 

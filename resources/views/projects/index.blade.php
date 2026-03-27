@@ -14,7 +14,10 @@
 
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             @forelse ($projects as $project)
-                <div class="group bg-white dark:bg-slate-800 rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 cursor-pointer"
+                <div class="group bg-white dark:bg-slate-800 rounded-3xl overflow-hidden
+                             shadow-lg hover:shadow-2xl hover:-translate-y-2
+                             transition-all duration-500 hover:shadow-sky-500/20 cursor-pointer
+                             border border-gray-100 dark:border-slate-700 custom-cursor-project"
                      onclick="window.location='{{ route('projects.show', $project) }}'">
                     <div class="h-48 bg-gradient-to-br from-emerald-400 to-sky-500 overflow-hidden">
                         @if ($project->image_path)

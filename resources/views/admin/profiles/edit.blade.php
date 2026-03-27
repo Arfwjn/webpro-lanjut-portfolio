@@ -11,9 +11,44 @@
         </div>
 
         <form method="POST" action="{{ route('admin.profiles.update', $profile) }}"
+              enctype="multipart/form-data"
               class="bg-white dark:bg-slate-800 rounded-3xl shadow-xl p-10 border border-gray-100 dark:border-gray-700 space-y-6">
             @csrf
             @method('PUT')
+
+            {{-- Foto Profil --}}
+            <div>
+                <label class="block text-sm font-semibold mb-3 text-gray-700 dark:text-gray-300">Foto Profil</label>
+                <div class="flex items-center gap-6">
+                    {{-- Preview current avatar --}}
+                    <div class="w-24 h-24 rounded-full flex-shrink-0 overflow-hidden bg-gradient-to-br from-emerald-400 to-sky-400 flex items-center justify-center">
+                        @if ($profile->avatar_url)
+                            <img id="avatar-preview"
+                                 src="{{ $profile->avatar_url }}"
+                                 alt="{{ $profile->name }}"
+                                 class="w-full h-full object-cover">
+                        @else
+                            <span id="avatar-preview" class="text-white font-black text-3xl">{{ $profile->initials }}</span>
+                        @endif
+                    </div>
+                    <div class="flex-1 space-y-3">
+                        <div>
+                            <input type="file" name="avatar" id="avatar-input" accept="image/*"
+                                   class="w-full px-5 py-3 rounded-xl border-2 border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-slate-700
+                                          focus:border-emerald-500 outline-none transition-all">
+                            <p class="text-xs text-gray-400 mt-1">Upload baru untuk mengganti. Max 2MB.</p>
+                        </div>
+                        @if ($profile->avatar_path)
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" name="remove_avatar" value="1"
+                                       class="w-4 h-4 accent-red-500">
+                                <span class="text-sm text-red-500 font-medium">Hapus foto profil saat ini</span>
+                            </label>
+                        @endif
+                        @error('avatar') <p class="text-red-500 text-sm mt-1">{{ $message }}</p> @enderror
+                    </div>
+                </div>
+            </div>
 
             <div>
                 <label class="block text-sm font-semibold mb-2 text-gray-700 dark:text-gray-300">Nama *</label>
@@ -38,9 +73,9 @@
             <div>
                 <label class="block text-sm font-semibold mb-3 text-gray-700 dark:text-gray-300">Social Links</label>
                 <div class="space-y-3">
-                    @foreach (['github', 'linkedin', 'twitter', 'instagram', 'website'] as $platform)
+                    @foreach (['github' => 'GitHub', 'linkedin' => 'LinkedIn', 'twitter' => 'Twitter/X', 'instagram' => 'Instagram', 'website' => 'Website'] as $platform => $label)
                         <div class="flex items-center gap-3">
-                            <span class="w-24 text-sm font-medium text-gray-600 dark:text-gray-400 capitalize">{{ $platform }}</span>
+                            <span class="w-28 text-sm font-medium text-gray-600 dark:text-gray-400">{{ $label }}</span>
                             <input type="url" name="social_links[{{ $platform }}]"
                                    value="{{ old('social_links.'.$platform, $profile->social_links[$platform] ?? '') }}"
                                    placeholder="https://..."
@@ -63,4 +98,28 @@
         </form>
     </div>
 </div>
+
+<script>
+const avatarInput = document.getElementById('avatar-input');
+const avatarPreview = document.getElementById('avatar-preview');
+
+avatarInput?.addEventListener('change', function() {
+    const file = this.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            if (avatarPreview.tagName === 'IMG') {
+                avatarPreview.src = e.target.result;
+            } else {
+                const img = document.createElement('img');
+                img.src = e.target.result;
+                img.className = 'w-full h-full object-cover';
+                img.id = 'avatar-preview';
+                avatarPreview.replaceWith(img);
+            }
+        };
+        reader.readAsDataURL(file);
+    }
+});
+</script>
 @endsection

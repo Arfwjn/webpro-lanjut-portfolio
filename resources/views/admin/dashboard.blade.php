@@ -19,8 +19,8 @@
         {{-- Stats Cards --}}
         <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
 
-            <div class="bg-white dark:bg-slate-800 p-7 rounded-3xl shadow-lg
-                      hover:shadow-sky-500/20 hover:-translate-y-0.5 transition-all duration-300">
+            <div class="bg-white dark:bg-slate-800 p-7 rounded-3xl shadow-lg border border-gray-100 dark:border-slate-700
+                        hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300">
                 <div class="flex items-center gap-4">
                     <div class="w-14 h-14 bg-emerald-100 dark:bg-emerald-900/40 rounded-2xl flex items-center justify-center">
                         <svg class="w-7 h-7 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -34,8 +34,8 @@
                 </div>
             </div>
 
-            <div class="bg-white dark:bg-slate-800 p-7 rounded-3xl shadow-lg
-                      hover:shadow-sky-500/20 hover:-translate-y-0.5 transition-all duration-300">
+            <div class="bg-white dark:bg-slate-800 p-7 rounded-3xl shadow-lg border border-gray-100 dark:border-slate-700
+                        hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300">
                 <div class="flex items-center gap-4">
                     <div class="w-14 h-14 bg-sky-100 dark:bg-sky-900/40 rounded-2xl flex items-center justify-center">
                         <svg class="w-7 h-7 text-sky-600 dark:text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -49,22 +49,28 @@
                 </div>
             </div>
 
-            <div class="bg-white dark:bg-slate-800 p-7 rounded-3xl shadow-lg
-                      hover:shadow-sky-500/20 hover:-translate-y-0.5 transition-all duration-300">
+            {{-- Messages Card --}}
+            <a href="{{ route('admin.messages.index') }}"
+               class="relative bg-white dark:bg-slate-800 p-7 rounded-3xl shadow-lg border border-gray-100 dark:border-slate-700
+                       hover:shadow-xl hover:border-indigo-300 dark:hover:border-indigo-700
+                       hover:-translate-y-0.5 transition-all duration-300">
+                @if ($unreadCount > 0)
+                    <span class="absolute top-4 right-4 bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">
+                        {{ $unreadCount }} baru
+                    </span>
+                @endif
                 <div class="flex items-center gap-4">
-                    <div class="w-14 h-14 bg-sky-100 dark:bg-sky-900/40 rounded-2xl flex items-center justify-center">
-                        <svg class="w-7 h-7 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                    <div class="w-14 h-14 bg-indigo-100 dark:bg-indigo-900/40 rounded-2xl flex items-center justify-center">
+                        <svg class="w-7 h-7 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
                         </svg>
                     </div>
                     <div>
-                        <p class="text-3xl font-black text-gray-900 dark:text-white">
-                            {{ $profilesCount + $projectsCount }}
-                        </p>
-                        <p class="text-sm text-gray-500 dark:text-gray-400 font-medium">Total Konten</p>
+                        <p class="text-3xl font-black text-gray-900 dark:text-white">{{ $messagesCount }}</p>
+                        <p class="text-sm text-gray-500 dark:text-gray-400 font-medium">Pesan Masuk</p>
                     </div>
                 </div>
-            </div>
+            </a>
 
             <a href="{{ route('home') }}" target="_blank"
                class="bg-gradient-to-br from-emerald-500 to-emerald-600 p-7 rounded-3xl shadow-lg
@@ -80,20 +86,15 @@
                         <p class="text-white/70 text-sm">Lihat publik ↗</p>
                     </div>
                 </div>
-            </a>            
-
+            </a>
         </div>
 
         {{-- Quick Actions --}}
         <div class="grid lg:grid-cols-2 gap-8 mb-12">
-
-            {{-- Profiles Management --}}
             <div class="bg-gradient-to-br from-emerald-50 to-emerald-100 dark:from-slate-800 dark:to-slate-700
                         p-8 rounded-3xl shadow-xl border border-emerald-100/50 dark:border-slate-600">
                 <div class="flex items-center justify-between mb-6">
-                    <h2 class="font-lexend text-2xl font-bold text-emerald-800 dark:text-emerald-200">
-                        Profiles
-                    </h2>
+                    <h2 class="font-lexend text-2xl font-bold text-emerald-800 dark:text-emerald-200">Profiles</h2>
                     <span class="text-3xl font-black text-emerald-500">{{ $profilesCount }}</span>
                 </div>
                 <div class="space-y-3">
@@ -111,21 +112,17 @@
                        class="flex items-center justify-center gap-2 w-full
                               bg-white dark:bg-slate-900 hover:bg-gray-50 dark:hover:bg-slate-800
                               border border-emerald-200 dark:border-emerald-700
-                              font-semibold py-3.5 px-6 rounded-2xl
-                              text-gray-700 dark:text-gray-300
+                              font-semibold py-3.5 px-6 rounded-2xl text-gray-700 dark:text-gray-300
                               transition-all hover:shadow-md">
                         Lihat Semua Profiles →
                     </a>
                 </div>
             </div>
 
-            {{-- Projects Management --}}
             <div class="bg-gradient-to-br from-sky-50 to-blue-100 dark:from-slate-800 dark:to-slate-700
                         p-8 rounded-3xl shadow-xl border border-sky-100/50 dark:border-slate-600">
                 <div class="flex items-center justify-between mb-6">
-                    <h2 class="font-lexend text-2xl font-bold text-sky-800 dark:text-sky-200">
-                        Projects
-                    </h2>
+                    <h2 class="font-lexend text-2xl font-bold text-sky-800 dark:text-sky-200">Projects</h2>
                     <span class="text-3xl font-black text-sky-500">{{ $projectsCount }}</span>
                 </div>
                 <div class="space-y-3">
@@ -143,33 +140,80 @@
                        class="flex items-center justify-center gap-2 w-full
                               bg-white dark:bg-slate-900 hover:bg-gray-50 dark:hover:bg-slate-800
                               border border-sky-200 dark:border-sky-700
-                              font-semibold py-3.5 px-6 rounded-2xl
-                              text-gray-700 dark:text-gray-300
+                              font-semibold py-3.5 px-6 rounded-2xl text-gray-700 dark:text-gray-300
                               transition-all hover:shadow-md">
                         Lihat Semua Projects →
                     </a>
                 </div>
             </div>
-
         </div>
 
-        {{-- Tips --}}
-        <div class="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-2xl p-6">
-            <div class="flex gap-4">
-                <div class="flex-shrink-0">
-                    <svg class="w-6 h-6 text-amber-500 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    </svg>
+        {{-- PESAN MASUK --}}
+        <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-xl border border-gray-100 dark:border-slate-700 overflow-hidden">
+            <div class="px-8 py-6 border-b border-gray-100 dark:border-slate-700 flex items-center justify-between flex-wrap gap-4">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-indigo-100 dark:bg-indigo-900/40 rounded-xl flex items-center justify-center">
+                        <svg class="w-5 h-5 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h2 class="font-lexend text-xl font-bold text-gray-900 dark:text-white">Pesan Masuk</h2>
+                        @if ($unreadCount > 0)
+                            <p class="text-sm text-indigo-600 dark:text-indigo-400 font-medium">{{ $unreadCount }} pesan belum dibaca</p>
+                        @else
+                            <p class="text-sm text-gray-500 dark:text-gray-400">Semua pesan sudah dibaca</p>
+                        @endif
+                    </div>
                 </div>
-                <div>
-                    <p class="font-semibold text-amber-800 dark:text-amber-200 mb-1">Tips Setup Awal</p>
-                    <ul class="text-sm text-amber-700 dark:text-amber-300 space-y-1">
-                        <li>1. Buat profil Anda di menu <strong>Profiles</strong> terlebih dahulu</li>
-                        <li>2. Tambahkan proyek-proyek di menu <strong>Projects</strong></li>
-                        <li>3. Jalankan <code class="bg-amber-100 dark:bg-amber-900 px-1 rounded">php artisan storage:link</code> jika belum ada</li>
-                    </ul>
-                </div>
+                <a href="{{ route('admin.messages.index') }}"
+                   class="px-5 py-2 bg-indigo-500 hover:bg-indigo-600 text-white font-semibold rounded-xl transition-all text-sm">
+                    Lihat Semua →
+                </a>
             </div>
+
+            @if ($latestMessages->count() > 0)
+                <div class="divide-y divide-gray-100 dark:divide-slate-700">
+                    @foreach ($latestMessages as $msg)
+                        <a href="{{ route('admin.messages.show', $msg) }}"
+                           class="flex items-start gap-4 px-8 py-5 hover:bg-gray-50 dark:hover:bg-slate-700/50 transition-colors group">
+
+                            {{-- Avatar placeholder --}}
+                            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-gradient-to-br from-indigo-400 to-purple-400
+                                        flex items-center justify-center text-white font-bold text-sm">
+                                {{ strtoupper(substr($msg->name, 0, 1)) }}
+                            </div>
+
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-center gap-2 mb-1">
+                                    <span class="font-semibold text-gray-900 dark:text-white text-sm">{{ $msg->name }}</span>
+                                    @if (!$msg->is_read)
+                                        <span class="w-2 h-2 bg-indigo-500 rounded-full flex-shrink-0"></span>
+                                    @endif
+                                    <span class="text-xs text-gray-400 ml-auto whitespace-nowrap">
+                                        {{ $msg->created_at->diffForHumans() }}
+                                    </span>
+                                </div>
+                                <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">{{ $msg->email }}</p>
+                                <p class="text-sm text-gray-600 dark:text-gray-300 line-clamp-1">{{ $msg->message }}</p>
+                            </div>
+
+                            <svg class="w-4 h-4 text-gray-400 group-hover:text-indigo-500 flex-shrink-0 mt-1 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </a>
+                    @endforeach
+                </div>
+            @else
+                <div class="py-16 text-center">
+                    <div class="w-16 h-16 bg-gray-100 dark:bg-slate-700 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                        </svg>
+                    </div>
+                    <p class="text-gray-500 dark:text-gray-400">Belum ada pesan masuk</p>
+                </div>
+            @endif
         </div>
 
     </div>

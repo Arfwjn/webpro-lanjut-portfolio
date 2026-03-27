@@ -7,13 +7,15 @@ use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\Admin\DashboardController;
 
-// Home──────
+// Home
 Route::get('/', function () {
     $projects = \App\Models\Project::latest()->take(6)->get();
-    return view('home', compact('projects'));
+    // Ambil profil pertama untuk ditampilkan di homepage
+    $profile  = \App\Models\Profile::first();
+    return view('home', compact('projects', 'profile'));
 })->name('home');
 
-// Contact Form Routes
+// Contact Form
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
 
 // Public Portfolio Routes
@@ -53,7 +55,7 @@ Route::post('/logout', function (Request $request) {
 // Admin Protected Routes
 Route::prefix('admin')->middleware('auth')->name('admin.')->group(function () {
     Route::get('/dashboard', DashboardController::class)->name('dashboard');
-    
+
     Route::resource('profiles', \App\Http\Controllers\Admin\ProfileController::class)
          ->except(['show'])
          ->names([
@@ -75,4 +77,18 @@ Route::prefix('admin')->middleware('auth')->name('admin.')->group(function () {
              'update'  => 'projects.update',
              'destroy' => 'projects.destroy',
          ]);
+
+    // Messages (Pesan dari form contact)
+    Route::resource('messages', \App\Http\Controllers\Admin\MessageController::class)
+         ->only(['index', 'show', 'destroy'])
+         ->names([
+             'index'   => 'messages.index',
+             'show'    => 'messages.show',
+             'destroy' => 'messages.destroy',
+         ]);
+
+    Route::post('/messages/{message}/read', [\App\Http\Controllers\Admin\MessageController::class, 'markRead'])
+         ->name('messages.read');
+    Route::post('/messages/read-all', [\App\Http\Controllers\Admin\MessageController::class, 'markAllRead'])
+         ->name('messages.read-all');
 });

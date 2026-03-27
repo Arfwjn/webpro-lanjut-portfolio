@@ -11,6 +11,19 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Lexend:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem('theme');
+            const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const isDark = savedTheme ? savedTheme === 'dark' : systemDark;
+            if (isDark) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        })();
+    </script>
 
     <!-- Tailwind v4 + App JS -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -22,17 +35,15 @@
 
     <!-- Flash Messages -->
     @if (session('success'))
-        <div id="flash-success" class="fixed top-20 right-4 z-50 bg-emerald-500 text-white px-6 py-3 rounded-xl shadow-2xl">
-            {{ session('success') }}
+        <div id="flash-success" class="fixed top-20 right-4 z-50 bg-emerald-500 text-white px-6 py-3 rounded-xl shadow-2xl animate-slide-in-top">
+            ✅ {{ session('success') }}
         </div>
-        <script>setTimeout(() => document.getElementById('flash-success')?.remove(), 4000)</script>
     @endif
 
     @if (session('error'))
-        <div id="flash-error" class="fixed top-20 right-4 z-50 bg-red-500 text-white px-6 py-3 rounded-xl shadow-2xl">
-            {{ session('error') }}
+        <div id="flash-error" class="fixed top-20 right-4 z-50 bg-red-500 text-white px-6 py-3 rounded-xl shadow-2xl animate-slide-in-top">
+            ❌ {{ session('error') }}
         </div>
-        <script>setTimeout(() => document.getElementById('flash-error')?.remove(), 4000)</script>
     @endif
 
     <main>

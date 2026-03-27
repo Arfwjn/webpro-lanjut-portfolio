@@ -11,8 +11,31 @@
         </div>
 
         <form method="POST" action="{{ route('admin.profiles.store') }}"
+              enctype="multipart/form-data"
               class="bg-white dark:bg-slate-800 rounded-3xl shadow-xl p-10 border border-gray-100 dark:border-gray-700 space-y-6">
             @csrf
+
+            {{-- Foto Profil --}}
+            <div>
+                <label class="block text-sm font-semibold mb-3 text-gray-700 dark:text-gray-300">Foto Profil</label>
+                <div class="flex items-center gap-6">
+                    {{-- Preview --}}
+                    <div id="avatar-preview-container"
+                         class="w-24 h-24 rounded-full bg-gradient-to-br from-emerald-400 to-sky-400
+                                flex items-center justify-center flex-shrink-0 overflow-hidden">
+                        <span id="avatar-placeholder" class="text-white font-black text-3xl">?</span>
+                        <img id="avatar-preview" src="" alt="Preview" class="hidden w-full h-full object-cover">
+                    </div>
+                    <div class="flex-1">
+                        <input type="file" name="avatar" id="avatar-input" accept="image/*"
+                               class="w-full px-5 py-3 rounded-xl border-2 border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-slate-700
+                                      focus:border-emerald-500 outline-none transition-all
+                                      @error('avatar') border-red-500 @enderror">
+                        <p class="text-xs text-gray-400 mt-2">Max 2MB. Format: JPG, PNG, WebP. Disarankan foto persegi (1:1).</p>
+                        @error('avatar') <p class="text-red-500 text-sm mt-1">{{ $message }}</p> @enderror
+                    </div>
+                </div>
+            </div>
 
             <div>
                 <label class="block text-sm font-semibold mb-2 text-gray-700 dark:text-gray-300">Nama *</label>
@@ -62,4 +85,36 @@
         </form>
     </div>
 </div>
+
+<script>
+
+const avatarInput = document.getElementById('avatar-input');
+const avatarPreview = document.getElementById('avatar-preview');
+const avatarPlaceholder = document.getElementById('avatar-placeholder');
+const nameInput = document.getElementById('name-input');
+
+function updateInitials(name) {
+    const words = name.trim().split(' ').filter(Boolean);
+    const initials = words.slice(0, 2).map(w => w[0].toUpperCase()).join('');
+    avatarPlaceholder.textContent = initials || '?';
+}
+
+nameInput?.addEventListener('input', () => updateInitials(nameInput.value));
+
+avatarInput?.addEventListener('change', function() {
+    const file = this.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            avatarPreview.src = e.target.result;
+            avatarPreview.classList.remove('hidden');
+            avatarPlaceholder.classList.add('hidden');
+        };
+        reader.readAsDataURL(file);
+    } else {
+        avatarPreview.classList.add('hidden');
+        avatarPlaceholder.classList.remove('hidden');
+    }
+});
+</script>
 @endsection
