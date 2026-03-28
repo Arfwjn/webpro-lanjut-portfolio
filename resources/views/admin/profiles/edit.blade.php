@@ -75,7 +75,7 @@
                 <div class="space-y-3">
                     @foreach (['github' => 'GitHub', 'linkedin' => 'LinkedIn', 'twitter' => 'Twitter/X', 'instagram' => 'Instagram', 'website' => 'Website'] as $platform => $label)
                         <div class="flex items-center gap-3">
-                            <span class="w-28 text-sm font-medium text-gray-600 dark:text-gray-400">{{ $label }}</span>
+                            <span class="w-24 text-sm font-medium text-gray-600 dark:text-gray-400">{{ $label }}</span>
                             <input type="url" name="social_links[{{ $platform }}]"
                                    value="{{ old('social_links.'.$platform, $profile->social_links[$platform] ?? '') }}"
                                    placeholder="https://..."

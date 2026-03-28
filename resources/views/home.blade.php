@@ -7,7 +7,7 @@
 {{-- HERO / PROFILE SECTION --}}
 <section id="hero" class="relative min-h-screen flex items-center justify-center overflow-hidden
                            bg-gradient-to-br from-slate-50 via-white to-emerald-50
-                           dark:from-slate-950 dark:via-slate-900 dark:to-slate-900 pt-20">
+                           dark:from-slate-950 dark:via-slate-900 dark:to-slate-900 pt-10">
 
     {{-- Background decorations --}}
     <div class="absolute w-96 h-96 right-10 mb-12 bg-gradient-to-br from-emerald-500 via-sky-500 to-purple-500 
