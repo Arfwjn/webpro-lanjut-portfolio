@@ -7,11 +7,10 @@ use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\Admin\DashboardController;
 
-// Home
+// Home — gunakan profil aktif, fallback ke profil pertama
 Route::get('/', function () {
     $projects = \App\Models\Project::latest()->take(6)->get();
-    // Ambil profil pertama untuk ditampilkan di homepage
-    $profile  = \App\Models\Profile::first();
+    $profile  = \App\Models\Profile::getActive();
     return view('home', compact('projects', 'profile'));
 })->name('home');
 
@@ -66,6 +65,10 @@ Route::prefix('admin')->middleware('auth')->name('admin.')->group(function () {
              'update'  => 'profiles.update',
              'destroy' => 'profiles.destroy',
          ]);
+
+    // Set profil aktif (ditampilkan di homepage)
+    Route::post('/profiles/{profile}/set-active', [\App\Http\Controllers\Admin\ProfileController::class, 'setActive'])
+         ->name('profiles.set-active');
 
     Route::resource('projects', \App\Http\Controllers\Admin\ProjectController::class)
          ->except(['show'])

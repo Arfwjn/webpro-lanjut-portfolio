@@ -14,7 +14,7 @@
                 <form method="POST" action="{{ route('admin.messages.read-all') }}">
                     @csrf
                     <button type="submit"
-                            class="px-6 py-2.5 bg-indigo-500 hover:bg-indigo-600 text-white font-semibold rounded-xl transition-all text-sm">
+                            class="px-6 py-2 transition-all bg-emerald-500 hover:bg-emerald-600 hover:shadow-lg hover:shadow-emerald-500/25 hover:-translate-y-0.5 font-semibold rounded-xl text-white whitespace-nowrap text-sm">
                         Tandai Semua Dibaca
                     </button>
                 </form>

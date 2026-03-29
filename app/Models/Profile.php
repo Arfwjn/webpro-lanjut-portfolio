@@ -13,17 +13,20 @@ class Profile extends Model
         'bio',
         'detailed_bio',
         'social_links',
+        'is_active',
     ];
 
     protected function casts(): array
     {
         return [
             'social_links' => 'array',
+            'is_active'    => 'boolean',
         ];
     }
 
     protected $attributes = [
         'social_links' => '[]',
+        'is_active'    => false,
     ];
 
     public function projects()
@@ -56,5 +59,23 @@ class Profile extends Model
             $initials .= strtoupper(substr($word, 0, 1));
         }
         return $initials ?: '?';
+    }
+
+    /**
+     * Set profil ini sebagai aktif (dan nonaktifkan yang lain).
+     */
+    public function setAsActive(): void
+    {
+        static::query()->update(['is_active' => false]);
+        $this->update(['is_active' => true]);
+    }
+
+    /**
+     * Ambil profil yang sedang aktif, fallback ke profil pertama.
+     */
+    public static function getActive(): ?static
+    {
+        return static::where('is_active', true)->first()
+            ?? static::latest()->first();
     }
 }

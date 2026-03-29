@@ -31,13 +31,17 @@ class ProfileController extends Controller
             'social_links.*' => 'nullable|url',
         ]);
 
-        // Upload avatar jika ada
         if ($request->hasFile('avatar')) {
             $validated['avatar_path'] = $request->file('avatar')->store('avatars', 'public');
         }
 
         $validated['social_links'] = array_filter($validated['social_links'] ?? []);
         unset($validated['avatar']);
+
+        // Jika ini profil pertama, jadikan aktif secara otomatis
+        if (Profile::count() === 0) {
+            $validated['is_active'] = true;
+        }
 
         Profile::create($validated);
 
@@ -89,7 +93,23 @@ class ProfileController extends Controller
         }
         $profile->delete();
 
+        // Jika profil yang dihapus adalah yang aktif, aktifkan profil pertama yang tersisa
+        if ($profile->is_active) {
+            Profile::latest()->first()?->update(['is_active' => true]);
+        }
+
         return redirect()->route('admin.profiles.index')
             ->with('success', 'Profil berhasil dihapus.');
+    }
+
+    /**
+     * Set profil ini sebagai profil aktif di halaman portfolio.
+     */
+    public function setActive(Profile $profile)
+    {
+        $profile->setAsActive();
+
+        return redirect()->back()
+            ->with('success', "Profil \"{$profile->name}\" kini ditampilkan di halaman portfolio.");
     }
 }

@@ -89,6 +89,117 @@
             </a>
         </div>
 
+        {{-- ═══════════════════════════════════════════════════════ --}}
+        {{-- PROFILE SWITCHER                                        --}}
+        {{-- ═══════════════════════════════════════════════════════ --}}
+        <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-xl border border-gray-100 dark:border-slate-700 overflow-hidden mb-10">
+
+            {{-- Header --}}
+            <div class="px-8 py-6 border-b border-gray-100 dark:border-slate-700 flex items-center justify-between flex-wrap gap-4">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-emerald-100 dark:bg-emerald-900/40 rounded-xl flex items-center justify-center">
+                        <svg class="w-5 h-5 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h2 class="font-lexend text-xl font-bold text-gray-900 dark:text-white">
+                            Profil Portfolio Aktif
+                        </h2>
+                        <p class="text-sm text-gray-500 dark:text-gray-400">
+                            Pilih profil yang ditampilkan di halaman utama portfolio
+                        </p>
+                    </div>
+                </div>
+                <a href="{{ route('admin.profiles.create') }}"
+                   class="px-5 py-2 bg-emerald-500 hover:bg-emerald-600 text-white font-semibold rounded-xl transition-all text-sm">
+                    + Profil Baru
+                </a>
+            </div>
+
+            {{-- Profile List --}}
+            @if ($profiles->count() > 0)
+                <div class="divide-y divide-gray-100 dark:divide-slate-700">
+                    @foreach ($profiles as $profile)
+                        <div class="flex items-center gap-5 px-8 py-5
+                                    {{ $profile->is_active ? 'bg-emerald-50/60 dark:bg-emerald-900/10' : 'hover:bg-gray-50 dark:hover:bg-slate-700/40' }}
+                                    transition-colors">
+
+                            {{-- Avatar --}}
+                            <div class="flex-shrink-0 relative">
+                                @if ($profile->avatar_url)
+                                    <img src="{{ $profile->avatar_url }}"
+                                         alt="{{ $profile->name }}"
+                                         class="w-12 h-12 rounded-full object-cover ring-2 {{ $profile->is_active ? 'ring-emerald-500' : 'ring-gray-200 dark:ring-slate-600' }}">
+                                @else
+                                    <div class="w-12 h-12 rounded-full flex items-center justify-center font-black text-lg text-white
+                                                {{ $profile->is_active ? 'bg-gradient-to-br from-emerald-400 to-emerald-600 ring-2 ring-emerald-500' : 'bg-gradient-to-br from-gray-400 to-gray-500' }}">
+                                        {{ $profile->initials }}
+                                    </div>
+                                @endif
+                                {{-- Active indicator dot --}}
+                                @if ($profile->is_active)
+                                    <span class="absolute -bottom-0.5 -right-0.5 w-4 h-4 bg-emerald-500 border-2 border-white dark:border-slate-800 rounded-full flex items-center justify-center">
+                                        <svg class="w-2 h-2 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                        </svg>
+                                    </span>
+                                @endif
+                            </div>
+
+                            {{-- Info --}}
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-center gap-2 mb-0.5">
+                                    <span class="font-semibold text-gray-900 dark:text-white">{{ $profile->name }}</span>
+                                    @if ($profile->is_active)
+                                        <span class="inline-flex items-center gap-1 px-2 py-0.5 bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300 rounded-full text-xs font-bold">
+                                            <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></span>
+                                            Aktif
+                                        </span>
+                                    @endif
+                                </div>
+                                <p class="text-sm text-gray-500 dark:text-gray-400 line-clamp-1">{{ $profile->bio }}</p>
+                            </div>
+
+                            {{-- Actions --}}
+                            <div class="flex-shrink-0 flex items-center gap-2">
+                                @if (!$profile->is_active)
+                                    <form method="POST" action="{{ route('admin.profiles.set-active', $profile) }}">
+                                        @csrf
+                                        <button type="submit"
+                                                class="px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl text-sm font-semibold transition-all hover:scale-105 whitespace-nowrap">
+                                            Tampilkan
+                                        </button>
+                                    </form>
+                                @else
+                                    <span class="px-4 py-2 bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300 rounded-xl text-sm font-semibold whitespace-nowrap cursor-default">
+                                        ✓ Ditampilkan
+                                    </span>
+                                @endif
+                                <a href="{{ route('admin.profiles.edit', $profile) }}"
+                                   class="px-3 py-2 bg-gray-100 dark:bg-slate-700 hover:bg-gray-200 dark:hover:bg-slate-600 text-gray-600 dark:text-gray-300 rounded-xl text-sm font-medium transition-all">
+                                    Edit
+                                </a>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            @else
+                <div class="py-16 text-center">
+                    <div class="w-16 h-16 bg-gray-100 dark:bg-slate-700 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                        </svg>
+                    </div>
+                    <p class="text-gray-500 dark:text-gray-400 mb-4">Belum ada profil</p>
+                    <a href="{{ route('admin.profiles.create') }}"
+                       class="inline-block px-6 py-2.5 bg-emerald-500 hover:bg-emerald-600 text-white font-semibold rounded-xl transition-all text-sm">
+                        Buat Profil Pertama
+                    </a>
+                </div>
+            @endif
+        </div>
+
         {{-- Quick Actions --}}
         <div class="grid lg:grid-cols-2 gap-8 mb-12">
             <div class="bg-gradient-to-br from-emerald-50 to-emerald-100 dark:from-slate-800 dark:to-slate-700
@@ -178,7 +289,6 @@
                         <a href="{{ route('admin.messages.show', $msg) }}"
                            class="flex items-start gap-4 px-8 py-5 hover:bg-gray-50 dark:hover:bg-slate-700/50 transition-colors group">
 
-                            {{-- Avatar placeholder --}}
                             <div class="flex-shrink-0 w-10 h-10 rounded-full bg-gradient-to-br from-indigo-400 to-purple-400
                                         flex items-center justify-center text-white font-bold text-sm">
                                 {{ strtoupper(substr($msg->name, 0, 1)) }}
