@@ -5,9 +5,16 @@
 @section('content')
 <div class="py-20">
     <div class="container mx-auto px-6 max-w-4xl">
-        <a href="{{ route('profiles.index') }}"
-           class="inline-flex items-center gap-2 text-emerald-500 hover:text-emerald-600 font-medium mb-10">
-            ← Semua Profil
+        <a href="{{ route('admin.messages.index') }}"
+        class="group inline-flex items-center gap-2 text-indigo-500 hover:text-indigo-600 font-medium transition-colors">
+            
+            {{-- Ikon Panah Kembali --}}
+            <svg class="w-5 h-5 transition-transform group-hover:-translate-x-1" 
+                aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12l4-4m-4 4 4 4"/>
+            </svg>
+
+            <span>Semua Profile</span>
         </a>
 
         <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-2xl p-10 border border-gray-100 dark:border-gray-700">

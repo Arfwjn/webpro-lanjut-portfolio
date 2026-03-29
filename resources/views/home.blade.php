@@ -358,11 +358,29 @@
                         <div class="flex gap-4 pt-3 border-t border-gray-100 dark:border-slate-700">
                             @if ($project->live_link)
                                 <a href="{{ $project->live_link }}" target="_blank" onclick="event.stopPropagation()"
-                                   class="text-sm text-emerald-500 hover:text-emerald-600 font-semibold">Live ↗</a>
+                                   class="group inline-flex items-center gap-1.5 text-sm text-emerald-500 hover:text-emerald-600 font-semibold transition-transform hover:translate-x-0.5 hover:-translate-y-0.5"><span>Live</span>
+
+                                    {{-- Ikon Share/Arrow Custom --}}
+                                    <svg class="w-4 h-4" 
+                                        aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4.248 19C3.22 15.77 5.275 8.232 12.466 8.232V6.079a1.025 1.025 0 0 1 1.644-.862l5.479 4.307a1.108 1.108 0 0 1 0 1.723l-5.48 4.307a1.026 1.026 0 0 1-1.643-.861v-2.154C5.275 13.616 4.248 19 4.248 19Z"/>
+                                    </svg>
+                                </a>
                             @endif
                             @if ($project->github_link)
-                                <a href="{{ $project->github_link }}" target="_blank" onclick="event.stopPropagation()"
-                                   class="text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 font-semibold">GitHub ↗</a>
+                                <a href="{{ $project->github_link }}" 
+                                target="_blank" 
+                                onclick="event.stopPropagation()"
+                                class="group inline-flex items-center gap-1.5 text-sm text-emerald-500 hover:text-emerald-600 font-semibold transition-transform hover:translate-x-0.5 hover:-translate-y-0.5">
+                                    
+                                    <span>GitHub</span>
+
+                                    {{-- Ikon Share/Arrow Custom --}}
+                                    <svg class="w-4 h-4" 
+                                        aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4.248 19C3.22 15.77 5.275 8.232 12.466 8.232V6.079a1.025 1.025 0 0 1 1.644-.862l5.479 4.307a1.108 1.108 0 0 1 0 1.723l-5.48 4.307a1.026 1.026 0 0 1-1.643-.861v-2.154C5.275 13.616 4.248 19 4.248 19Z"/>
+                                    </svg>
+                                </a>
                             @endif
                         </div>
                     </div>
@@ -382,10 +400,17 @@
         @if ($projects->count() > 0)
             <div class="text-center mt-14">
                 <a href="{{ route('projects.index') }}"
-                   class="inline-block px-10 py-4 bg-white dark:bg-slate-800 border-2 border-emerald-500
-                          text-emerald-600 dark:text-emerald-400 font-semibold rounded-2xl
-                          hover:bg-emerald-500 hover:text-white transition-all duration-300 shadow-lg">
-                    Lihat Semua Projects →
+                class="group inline-flex items-center justify-center gap-3 px-10 py-4 bg-white dark:bg-slate-800 border-2 border-emerald-500
+                        text-emerald-600 dark:text-emerald-400 font-semibold rounded-2xl
+                        hover:bg-emerald-500 hover:text-white transition-all duration-300 shadow-lg shadow-emerald-500/10">
+                    
+                    <span>Lihat Semua Proyek</span>
+
+                    {{-- Ikon Panah Ke Kanan --}}
+                    <svg class="w-5 h-5 transition-transform group-hover:translate-x-1" 
+                        aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 12H5m14 0-4 4m4-4-4-4"/>
+                    </svg>
                 </a>
             </div>
         @endif
@@ -513,9 +538,9 @@
                                   border-2 border-gray-200 dark:border-slate-600
                                   focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/20
                                   outline-none transition-all duration-300 text-base
-                                  @error('name') border-red-500 @enderror"
+                                  @error('name') border-rose-500 @enderror"
                            placeholder="Nama Anda">
-                    @error('name') <p class="text-red-500 text-sm mt-1.5">{{ $message }}</p> @enderror
+                    @error('name') <p class="text-rose-500 text-sm mt-1.5">{{ $message }}</p> @enderror
                 </div>
                 <div>
                     <label class="block text-sm font-semibold mb-2 text-gray-700 dark:text-gray-300">Email *</label>
@@ -524,9 +549,9 @@
                                   border-2 border-gray-200 dark:border-slate-600
                                   focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/20
                                   outline-none transition-all duration-300 text-base
-                                  @error('email') border-red-500 @enderror"
+                                  @error('email') border-rose-500 @enderror"
                            placeholder="email@contoh.com">
-                    @error('email') <p class="text-red-500 text-sm mt-1.5">{{ $message }}</p> @enderror
+                    @error('email') <p class="text-rose-500 text-sm mt-1.5">{{ $message }}</p> @enderror
                 </div>
                 <div>
                     <label class="block text-sm font-semibold mb-2 text-gray-700 dark:text-gray-300">Pesan *</label>
@@ -535,9 +560,9 @@
                                      border-2 border-gray-200 dark:border-slate-600
                                      focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/20
                                      outline-none transition-all duration-300 text-base resize-vertical
-                                     @error('message') border-red-500 @enderror"
+                                     @error('message') border-rose-500 @enderror"
                               placeholder="Ceritakan tentang proyek atau ide Anda...">{{ old('message') }}</textarea>
-                    @error('message') <p class="text-red-500 text-sm mt-1.5">{{ $message }}</p> @enderror
+                    @error('message') <p class="text-rose-500 text-sm mt-1.5">{{ $message }}</p> @enderror
                 </div>
                 <button type="submit"
                         class="w-full bg-gradient-to-r from-emerald-500 to-emerald-600

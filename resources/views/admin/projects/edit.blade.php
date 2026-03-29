@@ -4,10 +4,24 @@
 
 @section('content')
 <div class="py-12">
-    <div class="container mx-auto px-6 max-w-3xl">
-        <div class="flex items-center gap-4 mb-8">
-            <a href="{{ route('admin.projects.index') }}" class="text-emerald-500 hover:text-emerald-600">← Kembali</a>
-            <h1 class="font-lexend text-3xl font-bold">Edit: {{ $project->title }}</h1>
+    <div class="container mx-auto px-6 max-w-3xl">        
+        <div class="flex items-center gap-4">
+            <a href="{{ route('admin.projects.index') }}"
+            class="group inline-flex items-center gap-2 text-slate-500 hover:text-gray-600 font-sm transition-colors">
+                
+                {{-- Ikon Panah Kembali --}}
+                <svg class="w-5 h-5 transition-transform group-hover:-translate-x-1" 
+                    aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12l4-4m-4 4 4 4"/>
+                </svg>
+
+                <span class="text-sm">Kembali ke Proyek</span>
+            </a>            
+        </div>
+        <div class="flex items-center justify-center">
+            <h1 class="my-2 font-lexend text-3xl font-bold">
+                Edit Proyek
+            </h1>
         </div>
 
         <form method="POST" action="{{ route('admin.projects.update', $project) }}"
@@ -21,14 +35,14 @@
                     <label class="block text-sm font-semibold mb-2 text-gray-700 dark:text-gray-300">Judul Proyek *</label>
                     <input type="text" name="title" value="{{ old('title', $project->title) }}" required
                            class="w-full px-5 py-3 rounded-xl border-2 border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-slate-700 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/20 outline-none transition-all">
-                    @error('title') <p class="text-red-500 text-sm mt-1">{{ $message }}</p> @enderror
+                    @error('title') <p class="text-rose-500 text-sm mt-1">{{ $message }}</p> @enderror
                 </div>
 
                 <div class="md:col-span-2">
                     <label class="block text-sm font-semibold mb-2 text-gray-700 dark:text-gray-300">Deskripsi *</label>
                     <textarea name="description" rows="5" required
                               class="w-full px-5 py-3 rounded-xl border-2 border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-slate-700 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/20 outline-none transition-all resize-vertical">{{ old('description', $project->description) }}</textarea>
-                    @error('description') <p class="text-red-500 text-sm mt-1">{{ $message }}</p> @enderror
+                    @error('description') <p class="text-rose-500 text-sm mt-1">{{ $message }}</p> @enderror
                 </div>
 
                 <div class="md:col-span-2">
@@ -42,7 +56,7 @@
                     @endif
                     <input type="file" name="image" accept="image/*"
                            class="w-full px-5 py-3 rounded-xl border-2 border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-slate-700 focus:border-emerald-500 outline-none transition-all">
-                    @error('image') <p class="text-red-500 text-sm mt-1">{{ $message }}</p> @enderror
+                    @error('image') <p class="text-rose-500 text-sm mt-1">{{ $message }}</p> @enderror
                 </div>
 
                 <div class="md:col-span-2">
@@ -53,7 +67,7 @@
                                 <input type="text" name="tech_stack[]" value="{{ $tech }}"
                                        class="flex-1 px-5 py-3 rounded-xl border-2 border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-slate-700 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/20 outline-none transition-all">
                                 <button type="button" onclick="this.parentElement.remove()"
-                                        class="px-4 py-3 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl transition-colors">✕</button>
+                                        class="px-4 py-3 text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-900/20 rounded-xl transition-colors">✕</button>
                             </div>
                         @endforeach
                     </div>
@@ -121,7 +135,7 @@ function addTech() {
                class="flex-1 px-5 py-3 rounded-xl border-2 border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-slate-700 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/20 outline-none transition-all"
                placeholder="Contoh: Laravel, Vue.js...">
         <button type="button" onclick="this.parentElement.remove()"
-                class="px-4 py-3 text-red-500 hover:bg-red-50 rounded-xl transition-colors">✕</button>
+                class="px-4 py-3 text-rose-500 hover:bg-rose-50 rounded-xl transition-colors">✕</button>
     `;
     container.appendChild(div);
 }

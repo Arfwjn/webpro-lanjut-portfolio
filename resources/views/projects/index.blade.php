@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="py-20 bg-gray-50 dark:bg-slate-900">
-    <div class="container mx-auto px-6 max-w-6xl">
+    <div class="container mx-auto px-6 max-w-6xl">        
         <div class="text-center mb-16">
             <h1 class="font-lexend text-5xl font-bold bg-gradient-to-r from-emerald-500 to-emerald-600 bg-clip-text text-transparent mb-4 leading-relaxed pb-2">
                 Semua Projects
@@ -56,17 +56,29 @@
                         </div>
                         <div class="flex gap-4 pt-3 border-t border-gray-100 dark:border-slate-700">
                             @if ($project->live_link)
-                                <a href="{{ $project->live_link }}" target="_blank"
-                                   onclick="event.stopPropagation()"
-                                   class="text-sm text-emerald-500 hover:text-emerald-600 font-semibold">
-                                    Live ↗
+                                <a href="{{ $project->live_link }}" target="_blank" onclick="event.stopPropagation()"
+                                   class="group inline-flex items-center gap-1.5 text-sm text-emerald-500 hover:text-emerald-600 font-semibold transition-transform hover:translate-x-0.5 hover:-translate-y-0.5"><span>Live</span>
+
+                                    {{-- Ikon Share/Arrow Custom --}}
+                                    <svg class="w-4 h-4" 
+                                        aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4.248 19C3.22 15.77 5.275 8.232 12.466 8.232V6.079a1.025 1.025 0 0 1 1.644-.862l5.479 4.307a1.108 1.108 0 0 1 0 1.723l-5.48 4.307a1.026 1.026 0 0 1-1.643-.861v-2.154C5.275 13.616 4.248 19 4.248 19Z"/>
+                                    </svg>
                                 </a>
                             @endif
                             @if ($project->github_link)
-                                <a href="{{ $project->github_link }}" target="_blank"
-                                   onclick="event.stopPropagation()"
-                                   class="text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 font-semibold">
-                                    GitHub ↗
+                                <a href="{{ $project->github_link }}" 
+                                target="_blank" 
+                                onclick="event.stopPropagation()"
+                                class="group inline-flex items-center gap-1.5 text-sm text-emerald-500 hover:text-emerald-600 font-semibold transition-transform hover:translate-x-0.5 hover:-translate-y-0.5">
+                                    
+                                    <span>GitHub</span>
+
+                                    {{-- Ikon Share/Arrow Custom --}}
+                                    <svg class="w-4 h-4" 
+                                        aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4.248 19C3.22 15.77 5.275 8.232 12.466 8.232V6.079a1.025 1.025 0 0 1 1.644-.862l5.479 4.307a1.108 1.108 0 0 1 0 1.723l-5.48 4.307a1.026 1.026 0 0 1-1.643-.861v-2.154C5.275 13.616 4.248 19 4.248 19Z"/>
+                                    </svg>
                                 </a>
                             @endif
                         </div>

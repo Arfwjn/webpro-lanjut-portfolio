@@ -18,8 +18,8 @@
 
             {{-- Error --}}
             @if ($errors->any())
-                <div class="mb-6 p-4 bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 rounded-2xl">
-                    <p class="text-red-600 dark:text-red-400 text-sm">{{ $errors->first() }}</p>
+                <div class="mb-6 p-4 bg-rose-50 dark:bg-rose-900/30 border border-rose-200 dark:border-rose-800 rounded-2xl">
+                    <p class="text-rose-600 dark:text-rose-400 text-sm">{{ $errors->first() }}</p>
                 </div>
             @endif
 
@@ -42,7 +42,7 @@
                                border-2 border-gray-200 dark:border-gray-600
                                focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/20
                                transition-all duration-200 text-base outline-none
-                               @error('email') border-red-500 @enderror"
+                               @error('email') border-rose-500 @enderror"
                         placeholder="admin@example.com"
                     >
                 </div>
@@ -107,9 +107,17 @@
             </form>
         </div>
 
-        <p class="text-center mt-6 text-sm text-gray-500">
-            <a href="{{ route('home') }}" class="text-emerald-500 hover:text-emerald-600 font-medium">
-                ← Kembali ke Portfolio
+        <p class="text-center mt-6 text-sm text-gray-500">           
+            <a href="{{ route('home') }}"
+            class="group inline-flex items-center gap-2 text-slate-500 hover:text-gray-600 font-sm transition-colors">
+                
+                {{-- Ikon Panah Kembali --}}
+                <svg class="w-5 h-5 transition-transform group-hover:-translate-x-1" 
+                    aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12l4-4m-4 4 4 4"/>
+                </svg>
+
+                <span class="text-sm">Kembali ke Portfolio</span>
             </a>
         </p>
     </div>

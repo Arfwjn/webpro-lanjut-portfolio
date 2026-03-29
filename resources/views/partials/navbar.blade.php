@@ -58,7 +58,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
                         </svg>
                         @if ($unread > 0)
-                            <span class="absolute top-1 right-1 w-4 h-4 bg-red-500 text-white text-[9px] font-bold rounded-full flex items-center justify-center">
+                            <span class="absolute top-1 right-1 w-4 h-4 bg-rose-500 text-white text-[9px] font-bold rounded-full flex items-center justify-center">
                                 {{ $unread > 9 ? '9+' : $unread }}
                             </span>
                         @endif
@@ -71,7 +71,7 @@
                     <form method="POST" action="{{ route('logout') }}" class="inline">
                         @csrf
                         <button type="submit"
-                                class="px-5 py-2 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-full font-medium text-sm transition-all whitespace-nowrap">
+                                class="px-5 py-2 bg-gray-100 dark:bg-gray-800 hover:bg-rose-500 hover:text-white dark:hover:bg-rose-700 text-gray-700 dark:text-gray-300 rounded-full font-medium text-sm transition-all whitespace-nowrap">
                             Logout
                         </button>
                     </form>

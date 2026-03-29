@@ -60,7 +60,7 @@
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit"
-                                                    class="px-4 py-1.5 bg-red-500 hover:bg-red-600 text-white rounded-lg text-sm font-medium transition-all">
+                                                    class="px-4 py-1.5 bg-rose-500 hover:bg-rose-600 text-white rounded-lg text-sm font-medium transition-all">
                                                 Hapus
                                             </button>
                                         </form>

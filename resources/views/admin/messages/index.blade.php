@@ -51,9 +51,9 @@
 
                                     {{-- Badge "Baru" --}}
                                     @if (!$msg->is_read)
-                                        <span class="inline-flex items-center gap-1.5 text-white
+                                        <span class="inline-flex items-center gap-1.5 text-rose-600
                                                      text-xs font-bold px-2.5 py-0.5 rounded-full">
-                                            <span class="w-1.5 h-1.5 bg-white rounded-full animate-pulse"></span>
+                                            <span class="w-1.5 h-1.5 bg-rose-600 rounded-full animate-pulse"></span>
                                             Baru
                                         </span>
                                     @endif
@@ -93,7 +93,7 @@
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit"
-                                            class="px-3 py-1.5 bg-red-500 hover:bg-red-600
+                                            class="px-3 py-1.5 bg-rose-500 hover:bg-rose-600
                                                    text-white rounded-lg text-xs font-medium
                                                    transition-all hover:scale-105 whitespace-nowrap">
                                         Hapus

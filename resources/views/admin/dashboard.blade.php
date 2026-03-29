@@ -61,7 +61,7 @@
                        hover:shadow-xl hover:border-indigo-300 dark:hover:border-indigo-700
                        hover:-translate-y-0.5 transition-all duration-300">
                 @if ($unreadCount > 0)
-                    <span class="absolute top-4 right-4 bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">
+                    <span class="absolute top-4 right-4 bg-rose-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">
                         {{ $unreadCount }} baru
                     </span>
                 @endif

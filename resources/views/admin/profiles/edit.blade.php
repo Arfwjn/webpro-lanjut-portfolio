@@ -4,10 +4,24 @@
 
 @section('content')
 <div class="py-12">
-    <div class="container mx-auto px-6 max-w-3xl">
-        <div class="flex items-center gap-4 mb-8">
-            <a href="{{ route('admin.profiles.index') }}" class="text-emerald-500 hover:text-emerald-600">← Kembali</a>
-            <h1 class="font-lexend text-3xl font-bold">Edit Profil: {{ $profile->name }}</h1>
+    <div class="container mx-auto px-6 max-w-3xl">        
+        <div class="flex items-center gap-4">
+            <a href="{{ route('admin.profiles.index') }}"
+            class="group inline-flex items-center gap-2 text-slate-500 hover:text-gray-600 font-sm transition-colors">
+                
+                {{-- Ikon Panah Kembali --}}
+                <svg class="w-5 h-5 transition-transform group-hover:-translate-x-1" 
+                    aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12l4-4m-4 4 4 4"/>
+                </svg>
+
+                <span class="text-sm">Kembali ke Profil</span>
+            </a>            
+        </div>
+        <div class="flex items-center justify-center">
+            <h1 class="my-2 font-lexend text-3xl font-bold">
+                Edit Profil
+            </h1>
         </div>
 
         <form method="POST" action="{{ route('admin.profiles.update', $profile) }}"
@@ -41,11 +55,11 @@
                         @if ($profile->avatar_path)
                             <label class="flex items-center gap-2 cursor-pointer">
                                 <input type="checkbox" name="remove_avatar" value="1"
-                                       class="w-4 h-4 accent-red-500">
-                                <span class="text-sm text-red-500 font-medium">Hapus foto profil saat ini</span>
+                                       class="w-4 h-4 accent-rose-500">
+                                <span class="text-sm text-rose-500 font-medium">Hapus foto profil saat ini</span>
                             </label>
                         @endif
-                        @error('avatar') <p class="text-red-500 text-sm mt-1">{{ $message }}</p> @enderror
+                        @error('avatar') <p class="text-rose-500 text-sm mt-1">{{ $message }}</p> @enderror
                     </div>
                 </div>
             </div>
@@ -53,15 +67,15 @@
             <div>
                 <label class="block text-sm font-semibold mb-2 text-gray-700 dark:text-gray-300">Nama *</label>
                 <input type="text" name="name" value="{{ old('name', $profile->name) }}" required
-                       class="w-full px-5 py-3 rounded-xl border-2 border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-slate-700 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/20 outline-none transition-all @error('name') border-red-500 @enderror">
-                @error('name') <p class="text-red-500 text-sm mt-1">{{ $message }}</p> @enderror
+                       class="w-full px-5 py-3 rounded-xl border-2 border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-slate-700 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/20 outline-none transition-all @error('name') border-rose-500 @enderror">
+                @error('name') <p class="text-rose-500 text-sm mt-1">{{ $message }}</p> @enderror
             </div>
 
             <div>
                 <label class="block text-sm font-semibold mb-2 text-gray-700 dark:text-gray-300">Bio Singkat *</label>
                 <textarea name="bio" rows="3" required
-                          class="w-full px-5 py-3 rounded-xl border-2 border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-slate-700 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/20 outline-none transition-all resize-vertical @error('bio') border-red-500 @enderror">{{ old('bio', $profile->bio) }}</textarea>
-                @error('bio') <p class="text-red-500 text-sm mt-1">{{ $message }}</p> @enderror
+                          class="w-full px-5 py-3 rounded-xl border-2 border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-slate-700 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/20 outline-none transition-all resize-vertical @error('bio') border-rose-500 @enderror">{{ old('bio', $profile->bio) }}</textarea>
+                @error('bio') <p class="text-rose-500 text-sm mt-1">{{ $message }}</p> @enderror
             </div>
 
             <div>
