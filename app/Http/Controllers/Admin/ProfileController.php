@@ -102,9 +102,6 @@ class ProfileController extends Controller
             ->with('success', 'Profil berhasil dihapus.');
     }
 
-    /**
-     * Set profil ini sebagai profil aktif di halaman portfolio.
-     */
     public function setActive(Profile $profile)
     {
         $profile->setAsActive();

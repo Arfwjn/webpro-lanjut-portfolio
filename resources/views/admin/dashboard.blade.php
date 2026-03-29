@@ -19,35 +19,41 @@
         {{-- Stats Cards --}}
         <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
 
-            <div class="bg-white dark:bg-slate-800 p-7 rounded-3xl shadow-lg border border-gray-100 dark:border-slate-700
-                        hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300">
-                <div class="flex items-center gap-4">
-                    <div class="w-14 h-14 bg-emerald-100 dark:bg-emerald-900/40 rounded-2xl flex items-center justify-center">
-                        <svg class="w-7 h-7 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                        </svg>
-                    </div>
-                    <div>
-                        <p class="text-3xl font-black text-gray-900 dark:text-white">{{ $profilesCount }}</p>
-                        <p class="text-sm text-gray-500 dark:text-gray-400 font-medium">Profiles</p>
+            {{-- Profiles Card --}}
+            <a href="{{ route('admin.profiles.index') }}">
+                <div class="bg-white dark:bg-slate-800 p-7 rounded-3xl shadow-lg border border-gray-100 dark:border-slate-700
+                            hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300">
+                    <div class="flex items-center gap-4">
+                        <div class="w-14 h-14 bg-emerald-100 dark:bg-emerald-900/40 rounded-2xl flex items-center justify-center">
+                            <svg class="w-7 h-7 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="text-3xl font-black text-gray-900 dark:text-white">{{ $profilesCount }}</p>
+                            <p class="text-sm text-gray-500 dark:text-gray-400 font-medium">Profiles</p>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </a>
 
-            <div class="bg-white dark:bg-slate-800 p-7 rounded-3xl shadow-lg border border-gray-100 dark:border-slate-700
-                        hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300">
-                <div class="flex items-center gap-4">
-                    <div class="w-14 h-14 bg-sky-100 dark:bg-sky-900/40 rounded-2xl flex items-center justify-center">
-                        <svg class="w-7 h-7 text-sky-600 dark:text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                        </svg>
-                    </div>
-                    <div>
-                        <p class="text-3xl font-black text-gray-900 dark:text-white">{{ $projectsCount }}</p>
-                        <p class="text-sm text-gray-500 dark:text-gray-400 font-medium">Projects</p>
+            {{-- Projects Card --}}
+            <a href="{{ route('admin.projects.index') }}">
+                <div class="bg-white dark:bg-slate-800 p-7 rounded-3xl shadow-lg border border-gray-100 dark:border-slate-700
+                            hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300">
+                    <div class="flex items-center gap-4">
+                        <div class="w-14 h-14 bg-sky-100 dark:bg-sky-900/40 rounded-2xl flex items-center justify-center">
+                            <svg class="w-7 h-7 text-sky-600 dark:text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="text-3xl font-black text-gray-900 dark:text-white">{{ $projectsCount }}</p>
+                            <p class="text-sm text-gray-500 dark:text-gray-400 font-medium">Projects</p>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </a>        
 
             {{-- Messages Card --}}
             <a href="{{ route('admin.messages.index') }}"
@@ -89,9 +95,7 @@
             </a>
         </div>
 
-        {{-- ═══════════════════════════════════════════════════════ --}}
-        {{-- PROFILE SWITCHER                                        --}}
-        {{-- ═══════════════════════════════════════════════════════ --}}
+        {{-- PROFILE SWITCHER --}}
         <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-xl border border-gray-100 dark:border-slate-700 overflow-hidden mb-10">
 
             {{-- Header --}}
@@ -102,7 +106,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                         </svg>
                     </div>
-                    <div>
+                    <div class="py-2">
                         <h2 class="font-lexend text-xl font-bold text-gray-900 dark:text-white">
                             Profil Portfolio Aktif
                         </h2>
@@ -110,11 +114,7 @@
                             Pilih profil yang ditampilkan di halaman utama portfolio
                         </p>
                     </div>
-                </div>
-                <a href="{{ route('admin.profiles.create') }}"
-                   class="px-5 py-2 bg-emerald-500 hover:bg-emerald-600 text-white font-semibold rounded-xl transition-all text-sm">
-                    + Profil Baru
-                </a>
+                </div>                
             </div>
 
             {{-- Profile List --}}
@@ -268,7 +268,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
                         </svg>
                     </div>
-                    <div>
+                    <div class="py-2">
                         <h2 class="font-lexend text-xl font-bold text-gray-900 dark:text-white">Pesan Masuk</h2>
                         @if ($unreadCount > 0)
                             <p class="text-sm text-indigo-600 dark:text-indigo-400 font-medium">{{ $unreadCount }} pesan belum dibaca</p>
@@ -289,8 +289,8 @@
                         <a href="{{ route('admin.messages.show', $msg) }}"
                            class="flex items-start gap-4 px-8 py-5 hover:bg-gray-50 dark:hover:bg-slate-700/50 transition-colors group">
 
-                            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-gradient-to-br from-indigo-400 to-purple-400
-                                        flex items-center justify-center text-white font-bold text-sm">
+                            <div class="z-10 shrink-0 w-10 h-10 rounded-full bg-gradient-to-br from-emerald-500 via-sky-500 to-purple-500
+                                        transition-all hover:scale-105 whitespace-nowrap flex items-center justify-center text-white font-bold text-sm">
                                 {{ strtoupper(substr($msg->name, 0, 1)) }}
                             </div>
 

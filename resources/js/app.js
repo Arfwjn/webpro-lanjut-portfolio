@@ -1,20 +1,15 @@
 import "./bootstrap";
 
+// Dark / Light Mode
+document.addEventListener("click", (e) => {
+    if (e.target.closest("#theme-toggle")) {
+        const isDark = document.documentElement.classList.toggle("dark");
+        localStorage.setItem("theme", isDark ? "dark" : "light");
+    }
+});
+
+// Fitur lain
 document.addEventListener("DOMContentLoaded", () => {
-    const html = document.documentElement;
-    const toggle = document.getElementById("theme-toggle");
-
-    toggle?.addEventListener("click", () => {
-        const nowDark = html.classList.contains("dark");
-        if (nowDark) {
-            html.classList.remove("dark");
-            localStorage.setItem("theme", "light");
-        } else {
-            html.classList.add("dark");
-            localStorage.setItem("theme", "dark");
-        }
-    });
-
     // Skill tag hover effect
     document.querySelectorAll(".skill-hover").forEach((el) => {
         el.style.transition = "all 0.2s ease";
@@ -26,7 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    // Custom Cursor (emerald dot)
+    // Custom Cursor
     const cursorDot = document.createElement("div");
     Object.assign(cursorDot.style, {
         position: "fixed",

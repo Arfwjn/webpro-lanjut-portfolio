@@ -17,7 +17,6 @@ class DashboardController extends Controller
         $messagesCount  = ContactMessage::count();
         $unreadCount    = ContactMessage::unread()->count();
 
-        // Semua profil untuk profile switcher
         $profiles       = Profile::latest()->get();
 
         // 5 pesan terbaru untuk ditampilkan di dashboard

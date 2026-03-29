@@ -61,18 +61,12 @@ class Profile extends Model
         return $initials ?: '?';
     }
 
-    /**
-     * Set profil ini sebagai aktif (dan nonaktifkan yang lain).
-     */
     public function setAsActive(): void
     {
         static::query()->update(['is_active' => false]);
         $this->update(['is_active' => true]);
     }
 
-    /**
-     * Ambil profil yang sedang aktif, fallback ke profil pertama.
-     */
     public static function getActive(): ?static
     {
         return static::where('is_active', true)->first()

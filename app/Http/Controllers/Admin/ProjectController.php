@@ -36,7 +36,6 @@ class ProjectController extends Controller
             'profile_id'   => 'nullable|exists:profiles,id',
         ]);
 
-        // Hapus tech_stack kosong
         $validated['tech_stack'] = array_values(array_filter($validated['tech_stack']));
 
         if ($request->hasFile('image')) {
@@ -73,7 +72,6 @@ class ProjectController extends Controller
         $validated['tech_stack'] = array_values(array_filter($validated['tech_stack']));
 
         if ($request->hasFile('image')) {
-            // Hapus gambar lama
             if ($project->image_path) {
                 Storage::disk('public')->delete($project->image_path);
             }
