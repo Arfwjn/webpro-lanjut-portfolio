@@ -35,6 +35,7 @@ class ProfileController extends Controller
             $validated['avatar_path'] = $request->file('avatar')->store('avatars', 'public');
         }
 
+        // social links
         $validated['social_links'] = array_filter($validated['social_links'] ?? []);
         unset($validated['avatar']);
 
@@ -117,13 +118,13 @@ class ProfileController extends Controller
             ->with('success', "Profil \"{$profile->name}\" kini ditampilkan di halaman portfolio.");
     }
 
-    // ─── Private Helpers ────────────────────────────────────────────────────────
+    // Private Helpers
 
     private function processAboutData(Request $request): array
     {
         $about = $request->input('about', []);
 
-        // Experience — filter out empty entries
+        // Experience
         $experience = collect($about['experience'] ?? [])
             ->filter(fn($e) => !empty(trim($e['title'] ?? '')))
             ->values()
@@ -139,11 +140,11 @@ class ProfileController extends Controller
             'institution' => trim($about['education']['institution']  ?? ''),
         ];
 
-        // Skills + Interests — flat string arrays
+        // Skills + Interests
         $skills    = array_values(array_filter(array_map('trim', $about['skills']    ?? [])));
         $interests = array_values(array_filter(array_map('trim', $about['interests'] ?? [])));
 
-        // Stats — always 3
+        // Stats (always 3)
         $stats = [];
         foreach (range(0, 2) as $i) {
             $stats[] = [

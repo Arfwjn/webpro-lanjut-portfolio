@@ -77,7 +77,7 @@ class Profile extends Model
             ?? static::latest()->first();
     }
 
-    // ─── About / Identity Section ───────────────────────────────────────────────
+    // About / Identity Section 
 
     public static function defaultAboutData(): array
     {
@@ -101,9 +101,6 @@ class Profile extends Model
         ];
     }
 
-    /**
-     * Returns about data merged with defaults (so missing keys are always filled).
-     */
     public function resolvedAboutData(): array
     {
         $defaults = static::defaultAboutData();
@@ -112,7 +109,6 @@ class Profile extends Model
     }
 
     // Learning Journey / Roadmap Section 
-
     public static function defaultRoadmapItems(): array
     {
         return [
@@ -139,10 +135,7 @@ class Profile extends Model
         ];
     }
 
-    /**
-     * Always returns exactly 4 roadmap items with computed num/color/is_active.
-     * Items 1-3 use fixed colors; item 4 always gets the "gradient/active" treatment.
-     */
+    // Returns roadmap (4)
     public function resolvedRoadmapItems(): array
     {
         $colors   = ['emerald', 'sky', 'purple', 'gradient'];
