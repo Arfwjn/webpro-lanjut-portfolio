@@ -13,7 +13,7 @@
     --font-lexend: "Lexend", ui-sans-serif, system-ui, sans-serif;
     --font-inter: "Inter", ui-sans-serif, system-ui, sans-serif;
 
-    /* Slate (deep midnight blue alternative) */
+    /* Slate */
     --color-midnight-50: oklch(98% 0.015 260);
     --color-midnight-100: oklch(95% 0.025 260);
     --color-midnight-200: oklch(88% 0.04 260);
@@ -26,7 +26,7 @@
     --color-midnight-900: oklch(16% 0.1 260);
     --color-midnight-950: oklch(10% 0.07 260);
 
-    /* Custom emerald tones (boosted saturation for hero) */
+    /* Custom emerald tones */
     --color-emerald-hero: oklch(62% 0.22 162);
 
     /* Custom cursor */

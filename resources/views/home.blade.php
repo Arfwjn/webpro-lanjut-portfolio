@@ -33,7 +33,6 @@
                                             ring-4 ring-white dark:ring-slate-800
                                             shadow-2xl">
                             @else
-                                {{-- Placeholder dengan inisial --}}
                                 <div class="relative w-48 h-48 lg:w-64 lg:h-64 rounded-full
                                             bg-gradient-to-br from-emerald-400 to-sky-500
                                             flex items-center justify-center
@@ -168,6 +167,17 @@
 
 
 {{-- IDENTITY / ABOUT --}}
+@php
+    // Resolve about & roadmap data — use profile data if available, otherwise use defaults
+    $aboutData   = $profile ? $profile->resolvedAboutData()   : \App\Models\Profile::defaultAboutData();
+    $roadmapData = $profile ? $profile->resolvedRoadmapItems() : collect(\App\Models\Profile::defaultRoadmapItems())
+        ->map(fn($item, $i) => array_merge($item, [
+            'num'   => str_pad($i + 1, 2, '0', STR_PAD_LEFT),
+            'color' => ['emerald','sky','purple','gradient'][$i],
+            'is_active' => $i === 3,
+        ]))->all();
+@endphp
+
 <section id="identity" class="py-24 bg-white dark:bg-slate-900 overflow-hidden">
     <div class="container mx-auto px-6">        
         {{-- Section Title --}}
@@ -177,20 +187,17 @@
                     bg-clip-text text-transparent leading-relaxed pb-4">
                 About Me
             </h2>
-            {{-- Garis dekoratif di bawah judul --}}
             <div class="w-20 h-1.5 bg-gradient-to-r from-gray-900 to-gray-600 dark:from-white dark:to-gray-300 mx-auto rounded-full"></div>
         </div>
 
         {{-- Detailed Bio --}}
         @if ($profile && $profile->detailed_bio)
             <div class="max-w-4xl mx-auto mb-20 relative">
-                {{-- Dekorasi Quote Mark --}}
-                <span class="absolute -top-10 -left-8 text-8xl text-gray-100 dark:text-slate-800 font-serif -z-10 select-none">“</span>
+                <span class="absolute -top-10 -left-8 text-8xl text-gray-100 dark:text-slate-800 font-serif -z-10 select-none">"</span>
                 <div class="relative">
                     <p class="text-xl md:text-2xl text-gray-600 dark:text-gray-300 leading-relaxed font-medium italic text-center md:text-left">
                         {{ $profile->detailed_bio }}
                     </p>
-                    {{-- Garis Horizontal Setengah Lebar (Estetik) --}}
                     <div class="mt-8 flex justify-center md:justify-start">
                         <div class="w-1/2 md:w-1/3 h-px bg-gradient-to-r from-emerald-500 to-transparent"></div>
                     </div>
@@ -199,6 +206,7 @@
         @endif
 
         <div class="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+
             {{-- Experience --}}
             <div class="group bg-gradient-to-br from-emerald-50 to-emerald-100
                         dark:from-slate-800 dark:to-slate-700
@@ -211,22 +219,18 @@
                 </div>
                 <h3 class="font-lexend text-xl font-bold mb-4 text-emerald-700 dark:text-emerald-300">Experience</h3>
                 <ul class="space-y-3 text-gray-700 dark:text-gray-300">
-                    <li class="flex items-start gap-3">
-                        <span class="w-2 h-2 bg-emerald-500 rounded-full mt-2 flex-shrink-0"></span>
-                        <span class="text-sm leading-relaxed">Junior Web Developer (2025 - Sekarang)</span>
-                    </li>
-                    <li class="flex items-start gap-3">
-                        <span class="w-2 h-2 bg-emerald-500 rounded-full mt-2 flex-shrink-0"></span>
-                        <span class="text-sm leading-relaxed">Junior MLOps (2025 - Sekarang)</span>
-                    </li>
-                    <li class="flex items-start gap-3">
-                        <span class="w-2 h-2 bg-emerald-500 rounded-full mt-2 flex-shrink-0"></span>
-                        <span class="text-sm leading-relaxed">Machine Learning Specialist</span>
-                    </li>
+                    @foreach ($aboutData['experience'] as $exp)
+                        <li class="flex items-start gap-3">
+                            <span class="w-2 h-2 bg-emerald-500 rounded-full mt-2 flex-shrink-0"></span>
+                            <span class="text-sm leading-relaxed">
+                                {{ $exp['title'] }}{{ !empty($exp['period']) ? ' (' . $exp['period'] . ')' : '' }}
+                            </span>
+                        </li>
+                    @endforeach
                 </ul>
             </div>
 
-            {{-- Education --}}
+            {{-- Education & Skills --}}
             <div class="md:col-span-2 group bg-gradient-to-br from-sky-50 to-blue-100
                         dark:from-slate-800 dark:to-slate-700
                         p-8 rounded-3xl hover:scale-[1.02] transition-all duration-500
@@ -239,13 +243,17 @@
                 <h3 class="font-lexend text-xl font-bold mb-4 text-sky-700 dark:text-sky-300">Education & Skills</h3>
                 <div class="grid sm:grid-cols-2 gap-6">
                     <div>
-                        <p class="font-semibold text-gray-800 dark:text-gray-200 mb-1">Teknik Informatika</p>
-                        <p class="text-sm text-gray-600 dark:text-gray-400">STMIK Widya Utama · Lulus 2027</p>
+                        <p class="font-semibold text-gray-800 dark:text-gray-200 mb-1">
+                            {{ $aboutData['education']['degree'] }}
+                        </p>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">
+                            {{ $aboutData['education']['institution'] }}
+                        </p>
                     </div>
                     <div>
                         <p class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">Tech Stack utama:</p>
                         <div class="flex flex-wrap gap-2">
-                            @foreach (['Laravel', 'PyTorch', 'TensorFlow', 'Tailwind', 'MySQL', 'Docker'] as $skill)
+                            @foreach ($aboutData['skills'] as $skill)
                                 <span class="skill-hover px-3 py-1 bg-white/70 dark:bg-slate-600 rounded-lg text-xs font-medium
                                              cursor-pointer transition-all duration-200 hover:bg-emerald-500 hover:text-white">
                                     {{ $skill }}
@@ -268,7 +276,7 @@
                 </div>
                 <h3 class="font-lexend text-xl font-bold mb-4 text-purple-700 dark:text-purple-300">Interests</h3>
                 <div class="grid grid-cols-2 gap-2">
-                    @foreach (['Machine Learning', 'Deep Learning', 'MLOps', 'Data Science', 'AI/LLM', 'Cloud'] as $interest)
+                    @foreach ($aboutData['interests'] as $interest)
                         <span class="px-3 py-2 bg-white/60 dark:bg-slate-600/60 backdrop-blur-sm rounded-xl text-xs text-center font-medium text-gray-700 dark:text-gray-300">
                             {{ $interest }}
                         </span>
@@ -281,10 +289,12 @@
                         p-10 rounded-3xl hover:scale-[1.02] transition-all duration-500 shadow-lg hover:shadow-sky-500/20 
                         border border-emerald-100/50 dark:border-slate-600">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8 h-full items-center relative z-10">
-                    @foreach ([['1+', 'Tahun Pengalaman'], ['10+', 'Proyek Selesai'], ['5+', 'Klien Puas']] as [$num, $label])
+                    @foreach ($aboutData['stats'] as $stat)
                         <div class="text-center text-white p-4 rounded-2xl transition-transform duration-300 hover:scale-105">
-                            <p class="font-lexend text-5xl font-black leading-none mb-1 tracking-tighter drop-shadow-md">{{ $num }}</p>
-                            <p class="text-sm font-semibold opacity-90 tracking-wide">{{ $label }}</p>
+                            <p class="font-lexend text-5xl font-black leading-none mb-1 tracking-tighter drop-shadow-md">
+                                {{ $stat['number'] }}
+                            </p>
+                            <p class="text-sm font-semibold opacity-90 tracking-wide">{{ $stat['label'] }}</p>
                         </div>
                     @endforeach
                 </div>
@@ -359,25 +369,16 @@
                             @if ($project->live_link)
                                 <a href="{{ $project->live_link }}" target="_blank" onclick="event.stopPropagation()"
                                    class="group inline-flex items-center gap-1.5 text-sm text-emerald-500 hover:text-emerald-600 font-semibold transition-transform hover:translate-x-0.5 hover:-translate-y-0.5"><span>Live</span>
-
-                                    {{-- Ikon Share/Arrow Custom --}}
-                                    <svg class="w-4 h-4" 
-                                        aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4.248 19C3.22 15.77 5.275 8.232 12.466 8.232V6.079a1.025 1.025 0 0 1 1.644-.862l5.479 4.307a1.108 1.108 0 0 1 0 1.723l-5.48 4.307a1.026 1.026 0 0 1-1.643-.861v-2.154C5.275 13.616 4.248 19 4.248 19Z"/>
                                     </svg>
                                 </a>
                             @endif
                             @if ($project->github_link)
-                                <a href="{{ $project->github_link }}" 
-                                target="_blank" 
-                                onclick="event.stopPropagation()"
-                                class="group inline-flex items-center gap-1.5 text-sm text-emerald-500 hover:text-emerald-600 font-semibold transition-transform hover:translate-x-0.5 hover:-translate-y-0.5">
-                                    
+                                <a href="{{ $project->github_link }}" target="_blank" onclick="event.stopPropagation()"
+                                   class="group inline-flex items-center gap-1.5 text-sm text-emerald-500 hover:text-emerald-600 font-semibold transition-transform hover:translate-x-0.5 hover:-translate-y-0.5">
                                     <span>GitHub</span>
-
-                                    {{-- Ikon Share/Arrow Custom --}}
-                                    <svg class="w-4 h-4" 
-                                        aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4.248 19C3.22 15.77 5.275 8.232 12.466 8.232V6.079a1.025 1.025 0 0 1 1.644-.862l5.479 4.307a1.108 1.108 0 0 1 0 1.723l-5.48 4.307a1.026 1.026 0 0 1-1.643-.861v-2.154C5.275 13.616 4.248 19 4.248 19Z"/>
                                     </svg>
                                 </a>
@@ -403,12 +404,8 @@
                 class="group inline-flex items-center justify-center gap-3 px-10 py-4 bg-white dark:bg-slate-800 border-2 border-emerald-500
                         text-emerald-600 dark:text-emerald-400 font-semibold rounded-2xl
                         hover:bg-emerald-500 hover:text-white transition-all duration-300 shadow-lg shadow-emerald-500/10">
-                    
                     <span>Lihat Semua Proyek</span>
-
-                    {{-- Ikon Panah Ke Kanan --}}
-                    <svg class="w-5 h-5 transition-transform group-hover:translate-x-1" 
-                        aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <svg class="w-5 h-5 transition-transform group-hover:translate-x-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 12H5m14 0-4 4m4-4-4-4"/>
                     </svg>
                 </a>
@@ -418,18 +415,18 @@
 </section>
 
 
-{{-- ML ROADMAP --}}
+{{-- LEARNING JOURNEY --}}
 <section id="ml-roadmap" class="py-24 bg-white dark:bg-slate-900">
     <div class="container mx-auto px-6">
 
         <div class="text-center mb-16">
             <h2 class="font-lexend text-4xl lg:text-5xl font-bold mb-2
                         bg-gradient-to-r from-purple-500 to-emerald-500 bg-clip-text text-transparent leading-relaxed pb-4">
-                ML & Deep Learning Journey
+                Learning Journey
             </h2>
             <div class="w-20 h-1.5 bg-gradient-to-r from-purple-500 to-emerald-500 mx-auto rounded-full mb-8"></div>
             <p class="text-lg text-gray-600 dark:text-gray-300 max-w-xl mx-auto">
-                Perjalanan belajar machine learning saya dari dasar hingga production.
+                Perjalanan belajar saya dari dasar hingga production-ready.
             </p>
         </div>
 
@@ -438,34 +435,16 @@
             <div class="absolute left-6 md:left-1/2 md:-ml-px top-0 bottom-0 w-0.5
                         bg-gradient-to-b from-emerald-400 via-sky-400 to-purple-500"></div>
 
-            @php
-                $milestones = [
-                    ['num' => '01', 'year' => '2024', 'color' => 'emerald', 'title' => 'Python & NumPy Mastery',
-                     'desc' => 'Fondasi ML dengan Python, NumPy, Pandas. Data manipulation dan vectorized operations untuk analisis data skala besar.'],
-                    ['num' => '02', 'year' => '2024', 'color' => 'sky', 'title' => 'Scikit-Learn & TensorFlow',
-                     'desc' => 'Implementasi algoritma klasik (SVM, Random Forest, K-NN) dan first deep learning model menggunakan Keras.'],
-                    ['num' => '03', 'year' => '2025', 'color' => 'purple', 'title' => 'Computer Vision & NLP',
-                     'desc' => 'CNN untuk image classification, RNN/LSTM untuk sequence data, fine-tuning pre-trained transformer models (BERT, GPT).'],
-                    ['num' => '04', 'year' => '2025 → Now', 'color' => 'gradient', 'title' => 'Advanced Deep Learning & MLOps', 'is_active' => true,
-                    'desc' => 'GANs, Diffusion Models, LLM fine-tuning. Production ML pipelines dengan MLflow, Docker & Flask. API serving dengan FastAPI.'],
-                ];
-            @endphp
-
             <div class="space-y-12">
-                @foreach ($milestones as $i => $m)
+                @foreach ($roadmapData as $i => $m)
                     <div class="relative flex {{ $i % 2 === 0 ? '' : 'flex-row-reverse' }} items-start gap-8 md:gap-12">
                         {{-- Node --}}
                         <div class="flex-shrink-0 relative z-10">
                             @if ($m['color'] === 'gradient')
                                 <div class="relative flex items-center justify-center">
-                                    {{-- Efek Radar (Ping) --}}
                                     <span class="absolute inline-flex h-14 w-14 rounded-2xl bg-emerald-400 opacity-40 animate-ping"></span>
-                                    
-                                    {{-- Box Icon Utama --}}
                                     <div class="w-14 h-14 rounded-2xl flex items-center justify-center text-white shadow-2xl 
                                                 bg-gradient-to-br from-emerald-500 via-sky-500 to-purple-500 relative z-10 animate-pulse">
-
-                                        {{-- Icon Sparkles --}}
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-10 h-10 relative z-10 animate-pulse">
                                             <defs>
                                                 <linearGradient id="sparkleGradient" x1="0%" y1="0%" x2="100%" y2="100%">

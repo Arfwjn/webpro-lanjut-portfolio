@@ -14,13 +14,17 @@ class Profile extends Model
         'detailed_bio',
         'social_links',
         'is_active',
+        'about_data',
+        'roadmap_items',
     ];
 
     protected function casts(): array
     {
         return [
-            'social_links' => 'array',
-            'is_active'    => 'boolean',
+            'social_links'  => 'array',
+            'is_active'     => 'boolean',
+            'about_data'    => 'array',
+            'roadmap_items' => 'array',
         ];
     }
 
@@ -71,5 +75,91 @@ class Profile extends Model
     {
         return static::where('is_active', true)->first()
             ?? static::latest()->first();
+    }
+
+    // ─── About / Identity Section ───────────────────────────────────────────────
+
+    public static function defaultAboutData(): array
+    {
+        return [
+            'experience' => [
+                ['title' => 'Junior Web Developer', 'period' => '2025 - Sekarang'],
+                ['title' => 'Junior MLOps',          'period' => '2025 - Sekarang'],
+                ['title' => 'Machine Learning Specialist', 'period' => ''],
+            ],
+            'education' => [
+                'degree'      => 'Teknik Informatika',
+                'institution' => 'STMIK Widya Utama · Lulus 2027',
+            ],
+            'skills'    => ['Laravel', 'PyTorch', 'TensorFlow', 'Tailwind', 'MySQL', 'Docker'],
+            'interests' => ['Machine Learning', 'Deep Learning', 'MLOps', 'Data Science', 'AI/LLM', 'Cloud'],
+            'stats'     => [
+                ['number' => '1+',  'label' => 'Tahun Pengalaman'],
+                ['number' => '10+', 'label' => 'Proyek Selesai'],
+                ['number' => '5+',  'label' => 'Klien Puas'],
+            ],
+        ];
+    }
+
+    /**
+     * Returns about data merged with defaults (so missing keys are always filled).
+     */
+    public function resolvedAboutData(): array
+    {
+        $defaults = static::defaultAboutData();
+        $stored   = $this->about_data ?? [];
+        return array_replace_recursive($defaults, $stored);
+    }
+
+    // Learning Journey / Roadmap Section 
+
+    public static function defaultRoadmapItems(): array
+    {
+        return [
+            [
+                'title' => 'Python & NumPy Mastery',
+                'year'  => '2024',
+                'desc'  => 'Fondasi ML dengan Python, NumPy, Pandas. Data manipulation dan vectorized operations untuk analisis data skala besar.',
+            ],
+            [
+                'title' => 'Scikit-Learn & TensorFlow',
+                'year'  => '2024',
+                'desc'  => 'Implementasi algoritma klasik (SVM, Random Forest, K-NN) dan first deep learning model menggunakan Keras.',
+            ],
+            [
+                'title' => 'Computer Vision & NLP',
+                'year'  => '2025',
+                'desc'  => 'CNN untuk image classification, RNN/LSTM untuk sequence data, fine-tuning pre-trained transformer models (BERT, GPT).',
+            ],
+            [
+                'title' => 'Advanced Deep Learning & MLOps',
+                'year'  => '2025 → Now',
+                'desc'  => 'GANs, Diffusion Models, LLM fine-tuning. Production ML pipelines dengan MLflow, Docker & Flask. API serving dengan FastAPI.',
+            ],
+        ];
+    }
+
+    /**
+     * Always returns exactly 4 roadmap items with computed num/color/is_active.
+     * Items 1-3 use fixed colors; item 4 always gets the "gradient/active" treatment.
+     */
+    public function resolvedRoadmapItems(): array
+    {
+        $colors   = ['emerald', 'sky', 'purple', 'gradient'];
+        $defaults = static::defaultRoadmapItems();
+        $stored   = $this->roadmap_items ?? [];
+        $result   = [];
+
+        for ($i = 0; $i < 4; $i++) {
+            $item          = array_merge($defaults[$i], $stored[$i] ?? []);
+            $item['num']   = str_pad($i + 1, 2, '0', STR_PAD_LEFT);
+            $item['color'] = $colors[$i];
+            if ($i === 3) {
+                $item['is_active'] = true;
+            }
+            $result[] = $item;
+        }
+
+        return $result;
     }
 }
