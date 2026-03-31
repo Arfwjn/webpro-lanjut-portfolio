@@ -36,6 +36,7 @@ class ProjectController extends Controller
             'profile_id'   => 'nullable|exists:profiles,id',
         ]);
 
+        // Filter tech stack kosong, reindex array
         $validated['tech_stack'] = array_values(array_filter($validated['tech_stack']));
 
         if ($request->hasFile('image')) {
@@ -78,6 +79,7 @@ class ProjectController extends Controller
             $validated['image_path'] = $request->file('image')->store('projects', 'public');
         }
 
+        // Hapus field image sementara, update project
         unset($validated['image']);
         $project->update($validated);
 

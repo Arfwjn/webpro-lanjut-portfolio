@@ -25,6 +25,7 @@ class Project extends Model
         ];
     }
 
+    // Relasi ke profil pemilik project ini
     public function profile()
     {
         return $this->belongsTo(Profile::class);

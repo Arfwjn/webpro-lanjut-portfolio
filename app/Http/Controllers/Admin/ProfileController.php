@@ -35,7 +35,7 @@ class ProfileController extends Controller
             $validated['avatar_path'] = $request->file('avatar')->store('avatars', 'public');
         }
 
-        // social links
+        // Filter social links kosong, hapus field avatar dari validated
         $validated['social_links'] = array_filter($validated['social_links'] ?? []);
         unset($validated['avatar']);
 
@@ -44,7 +44,7 @@ class ProfileController extends Controller
         // Roadmap items
         $validated['roadmap_items'] = $this->processRoadmapItems($request);
 
-        // Jika ini profil pertama, jadikan aktif secara otomatis
+        // Kalau belum ada profil, buat yang ini aktif otomatis
         if (Profile::count() === 0) {
             $validated['is_active'] = true;
         }
@@ -119,7 +119,6 @@ class ProfileController extends Controller
     }
 
     // Private Helpers
-
     private function processAboutData(Request $request): array
     {
         $about = $request->input('about', []);
@@ -144,7 +143,7 @@ class ProfileController extends Controller
         $skills    = array_values(array_filter(array_map('trim', $about['skills']    ?? [])));
         $interests = array_values(array_filter(array_map('trim', $about['interests'] ?? [])));
 
-        // Stats (always 3)
+        // Stats (selalu 3 item)
         $stats = [];
         foreach (range(0, 2) as $i) {
             $stats[] = [

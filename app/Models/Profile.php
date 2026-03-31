@@ -65,12 +65,14 @@ class Profile extends Model
         return $initials ?: '?';
     }
 
+    // Jadikan profil ini aktif, nonaktifkan semua profil lain dulu
     public function setAsActive(): void
     {
         static::query()->update(['is_active' => false]);
         $this->update(['is_active' => true]);
     }
 
+    // Ambil profil aktif, fallback ke yang terbaru kalau tidak ada
     public static function getActive(): ?static
     {
         return static::where('is_active', true)->first()
@@ -78,7 +80,6 @@ class Profile extends Model
     }
 
     // About / Identity Section 
-
     public static function defaultAboutData(): array
     {
         return [
@@ -101,6 +102,7 @@ class Profile extends Model
         ];
     }
 
+    // Gabung data about dari DB dengan default values (DB override default)
     public function resolvedAboutData(): array
     {
         $defaults = static::defaultAboutData();
@@ -135,7 +137,7 @@ class Profile extends Model
         ];
     }
 
-    // Returns roadmap (4)
+    // Gabung roadmap dari DB dengan default, tambah color & num (selalu 4 items, step 4 aktif)
     public function resolvedRoadmapItems(): array
     {
         $colors   = ['emerald', 'sky', 'purple', 'gradient'];

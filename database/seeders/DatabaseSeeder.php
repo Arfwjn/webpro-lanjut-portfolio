@@ -10,8 +10,7 @@ class DatabaseSeeder extends Seeder
 {    
     public function run(): void
     {
-        // Buat admin user untuk login ke dashboard
-        // Email: ariefsidik2016@gmail.com | Password: arfwjn123
+        // Buat admin user pertama untuk akses dashboard admin
         User::firstOrCreate(
             ['email' => 'ariefsidik2016@gmail.com'],
             [
@@ -21,7 +20,7 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
-        $this->command->info('Admin user dibuat: ariefsidik2016@gmail.com / arfwjn123');
-        $this->command->warn(' Segera ganti password setelah login pertama!');
+$this->command->info('Admin user berhasil dibuat!');
+        $this->command->warn('Segera ganti password setelah login pertama kali!');
     }
 }

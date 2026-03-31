@@ -26,6 +26,7 @@ class ContactMessage extends Model
         return $query->where('is_read', false);
     }
 
+    // Tandai pesan ini sudah dibaca
     public function markAsRead(): void
     {
         $this->update(['is_read' => true]);
