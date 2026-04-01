@@ -168,7 +168,6 @@
 
 {{-- IDENTITY / ABOUT --}}
 @php
-    // Resolve about & roadmap data — use profile data if available, otherwise use defaults
     $aboutData   = $profile ? $profile->resolvedAboutData()   : \App\Models\Profile::defaultAboutData();
     $roadmapData = $profile ? $profile->resolvedRoadmapItems() : collect(\App\Models\Profile::defaultRoadmapItems())
         ->map(fn($item, $i) => array_merge($item, [

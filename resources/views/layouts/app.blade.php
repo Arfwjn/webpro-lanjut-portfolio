@@ -111,9 +111,9 @@
     </main>
 
     <!-- Footer -->
-    <footer class="border-t border-gray-200 dark:border-gray-700 mt-24 py-12 bg-gray-50 dark:bg-slate-900">
+    <footer class="border-t border-gray-200 dark:border-gray-700mt-4 py-12 bg-gray-50 dark:bg-slate-900">
         <div class="container mx-auto px-6 text-center text-sm text-gray-500 dark:text-gray-400">
-            © {{ date('Y') }} Portfolio. Dibuat dengan Laravel & Tailwind CSS v4.
+            © {{ date('Y') }} Web Programming Lanjut. Portfolio Arief Sidik Wijayanto. Dibuat dengan Laravel & Tailwind CSS v4.
         </div>
     </footer>
 
