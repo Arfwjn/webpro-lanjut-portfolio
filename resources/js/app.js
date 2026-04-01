@@ -1,6 +1,7 @@
 import "./bootstrap";
 
-// Dark / Light Mode
+// ── Dark / Light Mode ──────────────────────────────────────────────────────────
+// Toggle class 'dark' di <html> dan simpan pilihan ke localStorage.
 document.addEventListener("click", (e) => {
     if (e.target.closest("#theme-toggle")) {
         const isDark = document.documentElement.classList.toggle("dark");
@@ -8,9 +9,9 @@ document.addEventListener("click", (e) => {
     }
 });
 
-// Fitur lain
 document.addEventListener("DOMContentLoaded", () => {
-    // Skill tag hover effect
+    // Skill Tag Hover Effect
+    // Scale-up sedikit saat hover pada tag skill di section About.
     document.querySelectorAll(".skill-hover").forEach((el) => {
         el.style.transition = "all 0.2s ease";
         el.addEventListener("mouseenter", () => {
@@ -36,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
         transition: "transform 0.15s ease, opacity 0.2s ease",
         willChange: "transform",
         transform: "translate(-50%, -50%)",
-        opacity: "0",
+        opacity: "0", // Tersembunyi sampai mouse masuk ke window
     });
     document.body.appendChild(cursorDot);
 
@@ -49,6 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
         cursorDot.style.opacity = "0";
     });
 
+    // Perbesar kursor saat hover di kartu proyek
     document.querySelectorAll(".custom-cursor-project").forEach((card) => {
         card.addEventListener("mouseenter", () => {
             cursorDot.style.transform = "translate(-50%, -50%) scale(2.5)";
@@ -58,7 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    // Smooth scroll for anchor links
+    // Smooth Scroll
     document.querySelectorAll('a[href^="#"]').forEach((a) => {
         a.addEventListener("click", (e) => {
             const target = document.querySelector(a.getAttribute("href"));
@@ -69,7 +71,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    // Scroll-triggered reveal animation
+    // Scroll-Triggered Reveal
     if ("IntersectionObserver" in window) {
         const observer = new IntersectionObserver(
             (entries) => {
@@ -101,7 +103,8 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // Auto-dismiss flash messages
+    // Auto-Dismiss Flash Messages
+    // Flash message (#flash-success, #flash-error) hilang otomatis setelah 4 detik
     setTimeout(() => {
         document
             .querySelectorAll("#flash-success, #flash-error")

@@ -23,7 +23,7 @@
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12l4-4m-4 4 4 4"/>
                 </svg>
                 <span class="text-sm">Kembali ke Profil</span>
-            </a>            
+            </a>
         </div>
         <div class="flex items-center justify-center">
             <h1 class="my-2 font-lexend text-3xl font-bold">Tambah Profil Baru</h1>
@@ -34,7 +34,7 @@
               class="space-y-6">
             @csrf
 
-            {{-- ── CARD: Profil Dasar ─────────────────────────────────────────── --}}
+            {{-- CARD: Profil Dasar─--}}
             <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-xl p-10 border border-gray-100 dark:border-gray-700 space-y-6">
                 <h2 class="font-lexend text-lg font-bold text-gray-700 dark:text-gray-200 flex items-center gap-2">
                     <span class="w-7 h-7 rounded-lg bg-emerald-100 dark:bg-emerald-900/40 flex items-center justify-center text-emerald-600 dark:text-emerald-400 text-xs font-black">1</span>
@@ -96,13 +96,14 @@
                 </div>
             </div>
 
-            {{-- ── CARD: About — Experience ───────────────────────────────────── --}}
+            {{-- CARD: About Experience --}}
             <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-xl p-10 border border-gray-100 dark:border-gray-700 space-y-5">
                 <h2 class="font-lexend text-lg font-bold text-gray-700 dark:text-gray-200 flex items-center gap-2">
                     <span class="w-7 h-7 rounded-lg bg-emerald-100 dark:bg-emerald-900/40 flex items-center justify-center text-emerald-600 dark:text-emerald-400 text-xs font-black">2</span>
                     About — Experience
                 </h2>
 
+                {{-- Container baris experience --}}
                 <div id="experience-container" class="space-y-3">
                     @foreach ($defaultAbout['experience'] as $idx => $exp)
                         <div class="flex gap-2 items-start experience-row">
@@ -116,18 +117,27 @@
                                        placeholder="Periode"
                                        class="px-4 py-2.5 rounded-xl border-2 border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-slate-700 focus:border-emerald-500 outline-none transition-all text-sm">
                             </div>
+                            {{-- Tombol hapus baris (SVG X) --}}
                             <button type="button" onclick="removeRow(this, 'experience-container')"
-                                    class="px-3 py-2.5 text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-900/20 rounded-xl transition-colors shrink-0">✕</button>
+                                    class="p-2.5 text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-900/20 rounded-xl transition-colors shrink-0" aria-label="Hapus baris">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/>
+                                </svg>
+                            </button>
                         </div>
                     @endforeach
                 </div>
+                {{-- Tombol tambah baris experience (SVG plus) --}}
                 <button type="button" onclick="addExperience()"
-                        class="px-4 py-2 text-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 rounded-xl text-sm font-medium transition-colors">
-                    + Tambah Pengalaman
+                        class="inline-flex items-center gap-1.5 px-4 py-2 text-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 rounded-xl text-sm font-medium transition-colors">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                    </svg>
+                    Tambah Pengalaman
                 </button>
             </div>
 
-            {{-- ── CARD: About — Education & Skills ───────────────────────────── --}}
+            {{-- CARD: About Education & Skills --}}
             <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-xl p-10 border border-gray-100 dark:border-gray-700 space-y-5">
                 <h2 class="font-lexend text-lg font-bold text-gray-700 dark:text-gray-200 flex items-center gap-2">
                     <span class="w-7 h-7 rounded-lg bg-sky-100 dark:bg-sky-900/40 flex items-center justify-center text-sky-600 dark:text-sky-400 text-xs font-black">3</span>
@@ -160,18 +170,25 @@
                                        placeholder="Nama teknologi"
                                        class="flex-1 px-4 py-2.5 rounded-xl border-2 border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-slate-700 focus:border-emerald-500 outline-none transition-all text-sm">
                                 <button type="button" onclick="removeRow(this, 'skills-container')"
-                                        class="px-3 py-2 text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-900/20 rounded-xl transition-colors">✕</button>
+                                        class="p-2 text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-900/20 rounded-xl transition-colors" aria-label="Hapus">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/>
+                                    </svg>
+                                </button>
                             </div>
                         @endforeach
                     </div>
                     <button type="button" onclick="addSkill()"
-                            class="mt-2 px-4 py-2 text-sky-600 hover:bg-sky-50 dark:hover:bg-sky-900/20 rounded-xl text-sm font-medium transition-colors">
-                        + Tambah Skill
+                            class="mt-2 inline-flex items-center gap-1.5 px-4 py-2 text-sky-600 hover:bg-sky-50 dark:hover:bg-sky-900/20 rounded-xl text-sm font-medium transition-colors">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                        </svg>
+                        Tambah Skill
                     </button>
                 </div>
             </div>
 
-            {{-- ── CARD: About — Interests ─────────────────────────────────────── --}}
+            {{-- CARD: About Interests --}}
             <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-xl p-10 border border-gray-100 dark:border-gray-700 space-y-5">
                 <h2 class="font-lexend text-lg font-bold text-gray-700 dark:text-gray-200 flex items-center gap-2">
                     <span class="w-7 h-7 rounded-lg bg-purple-100 dark:bg-purple-900/40 flex items-center justify-center text-purple-600 dark:text-purple-400 text-xs font-black">4</span>
@@ -185,17 +202,24 @@
                                    placeholder="Bidang minat"
                                    class="flex-1 px-4 py-2.5 rounded-xl border-2 border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-slate-700 focus:border-emerald-500 outline-none transition-all text-sm">
                             <button type="button" onclick="removeRow(this, 'interests-container')"
-                                    class="px-3 py-2 text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-900/20 rounded-xl transition-colors">✕</button>
+                                    class="p-2 text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-900/20 rounded-xl transition-colors" aria-label="Hapus">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/>
+                                </svg>
+                            </button>
                         </div>
                     @endforeach
                 </div>
                 <button type="button" onclick="addInterest()"
-                        class="px-4 py-2 text-purple-600 hover:bg-purple-50 dark:hover:bg-purple-900/20 rounded-xl text-sm font-medium transition-colors">
-                    + Tambah Interest
+                        class="inline-flex items-center gap-1.5 px-4 py-2 text-purple-600 hover:bg-purple-50 dark:hover:bg-purple-900/20 rounded-xl text-sm font-medium transition-colors">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                    </svg>
+                    Tambah Interest
                 </button>
             </div>
 
-            {{-- ── CARD: About — Stats ─────────────────────────────────────────── --}}
+            {{-- CARD: About Stats --}}
             <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-xl p-10 border border-gray-100 dark:border-gray-700 space-y-5">
                 <div class="flex items-center justify-between">
                     <h2 class="font-lexend text-lg font-bold text-gray-700 dark:text-gray-200 flex items-center gap-2">
@@ -222,7 +246,7 @@
                 </div>
             </div>
 
-            {{-- ── CARD: Learning Journey ──────────────────────────────────────── --}}
+            {{-- CARD: Learning Journey --}}
             <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-xl p-10 border border-gray-100 dark:border-gray-700 space-y-5">
                 <div class="flex items-center justify-between">
                     <h2 class="font-lexend text-lg font-bold text-gray-700 dark:text-gray-200 flex items-center gap-2">
@@ -266,7 +290,7 @@
                 </div>
             </div>
 
-            {{-- ── Submit ───────────────────────────────────────────────────────── --}}
+            {{-- Submit--}}
             <div class="flex gap-4 pt-2 pb-8">
                 <button type="submit"
                         class="px-8 py-3 bg-emerald-500 hover:bg-emerald-600 text-white rounded-2xl font-semibold transition-all shadow-lg hover:shadow-emerald-500/30">
@@ -282,7 +306,8 @@
 </div>
 
 <script>
-// Avatar preview
+// Avatar Preview
+// Preview foto sebelum upload, inisial berubah dinamis sesuai input nama.
 const avatarInput       = document.getElementById('avatar-input');
 const avatarPreview     = document.getElementById('avatar-preview');
 const avatarPlaceholder = document.getElementById('avatar-placeholder');
@@ -307,13 +332,27 @@ avatarInput?.addEventListener('change', function () {
     reader.readAsDataURL(file);
 });
 
-// Generic row removal
+// Generic Row Removal 
+// Hapus baris input dinamis dari container tertentu.
+// Minimal 1 baris harus tersisa agar form masih valid.
 function removeRow(btn, containerId) {
     const container = document.getElementById(containerId);
     const rows = container.querySelectorAll('[class*="-row"]');
     if (rows.length <= 1) { alert('Minimal harus ada 1 item.'); return; }
     btn.closest('[class*="-row"]').remove();
 }
+
+// SVG X
+const svgX = `
+    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/>
+    </svg>`;
+
+// SVG Plus
+const svgPlus = `
+    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+    </svg>`;
 
 // Experience
 function addExperience() {
@@ -329,7 +368,9 @@ function addExperience() {
                    class="px-4 py-2.5 rounded-xl border-2 border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-slate-700 focus:border-emerald-500 outline-none transition-all text-sm">
         </div>
         <button type="button" onclick="removeRow(this,'experience-container')"
-                class="px-3 py-2.5 text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-900/20 rounded-xl transition-colors shrink-0">✕</button>`;
+                class="p-2.5 text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-900/20 rounded-xl transition-colors shrink-0" aria-label="Hapus baris">
+            ${svgX}
+        </button>`;
     container.appendChild(div);
 }
 
@@ -342,7 +383,9 @@ function addSkill() {
         <input type="text" name="about[skills][]" placeholder="Nama teknologi"
                class="flex-1 px-4 py-2.5 rounded-xl border-2 border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-slate-700 focus:border-emerald-500 outline-none transition-all text-sm">
         <button type="button" onclick="removeRow(this,'skills-container')"
-                class="px-3 py-2 text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-900/20 rounded-xl transition-colors">✕</button>`;
+                class="p-2 text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-900/20 rounded-xl transition-colors" aria-label="Hapus">
+            ${svgX}
+        </button>`;
     container.appendChild(div);
 }
 
@@ -355,7 +398,9 @@ function addInterest() {
         <input type="text" name="about[interests][]" placeholder="Bidang minat"
                class="flex-1 px-4 py-2.5 rounded-xl border-2 border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-slate-700 focus:border-emerald-500 outline-none transition-all text-sm">
         <button type="button" onclick="removeRow(this,'interests-container')"
-                class="px-3 py-2 text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-900/20 rounded-xl transition-colors">✕</button>`;
+                class="p-2 text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-900/20 rounded-xl transition-colors" aria-label="Hapus">
+            ${svgX}
+        </button>`;
     container.appendChild(div);
 }
 </script>

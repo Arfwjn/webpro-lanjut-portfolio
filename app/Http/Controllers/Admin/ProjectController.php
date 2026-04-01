@@ -8,14 +8,20 @@ use App\Models\Profile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
+/**
+ * ProjectController (Admin): CRUD untuk data proyek portfolio.
+ * Setiap proyek bisa dikaitkan ke satu profil via profile_id. 
+ */
 class ProjectController extends Controller
 {
+    // Tampilkan semua proyek beserta nama profil terkait
     public function index()
     {
         $projects = Project::with('profile')->latest()->paginate(9);
         return view('admin.projects.index', compact('projects'));
     }
 
+    // Form tambah proyek
     public function create()
     {
         $profiles = Profile::pluck('name', 'id');
@@ -36,13 +42,15 @@ class ProjectController extends Controller
             'profile_id'   => 'nullable|exists:profiles,id',
         ]);
 
-        // Filter tech stack kosong, reindex array
+        // Buang tech stack yang kosong
         $validated['tech_stack'] = array_values(array_filter($validated['tech_stack']));
 
+        // Simpan gambar jika ada upload
         if ($request->hasFile('image')) {
             $validated['image_path'] = $request->file('image')->store('projects', 'public');
         }
 
+        // Hapus key 'image' dari validated (sudah diproses ke 'image_path')
         unset($validated['image']);
         Project::create($validated);
 
@@ -50,6 +58,7 @@ class ProjectController extends Controller
             ->with('success', 'Proyek berhasil dibuat.');
     }
 
+    // Form edit proyek
     public function edit(Project $project)
     {
         $profiles = Profile::pluck('name', 'id');
@@ -72,6 +81,7 @@ class ProjectController extends Controller
 
         $validated['tech_stack'] = array_values(array_filter($validated['tech_stack']));
 
+        // Ganti gambar lama jika ada upload baru
         if ($request->hasFile('image')) {
             if ($project->image_path) {
                 Storage::disk('public')->delete($project->image_path);
@@ -79,7 +89,6 @@ class ProjectController extends Controller
             $validated['image_path'] = $request->file('image')->store('projects', 'public');
         }
 
-        // Hapus field image sementara, update project
         unset($validated['image']);
         $project->update($validated);
 
@@ -87,6 +96,7 @@ class ProjectController extends Controller
             ->with('success', 'Proyek berhasil diperbarui.');
     }
 
+    // Hapus proyek beserta gambar covernya dari storage.
     public function destroy(Project $project)
     {
         if ($project->image_path) {

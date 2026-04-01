@@ -4,6 +4,19 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Model Project: Data proyek portfolio.
+ *
+ * @property int            $id
+ * @property int|null       $profile_id   
+ * @property string         $title
+ * @property string         $description
+ * @property string|null    $image_path   
+ * @property array          $tech_stack  
+ * @property string|null    $live_link    URL demo live
+ * @property string|null    $github_link  URL repo GitHub
+ * @property \Carbon\Carbon $date      
+ */
 class Project extends Model
 {
     protected $fillable = [
@@ -19,13 +32,13 @@ class Project extends Model
 
     protected function casts(): array
     {
-        return [
+        return [          
             'tech_stack' => 'array',
             'date'       => 'date',
         ];
     }
 
-    // Relasi ke profil pemilik project ini
+    // Relationships
     public function profile()
     {
         return $this->belongsTo(Profile::class);

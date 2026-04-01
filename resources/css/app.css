@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+/* Aktifkan variant 'dark'
+   Kelas 'dark' ditambah/hapus di <html> via JS (app.js). */
 @variant dark (&:where(.dark, .dark *));
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
@@ -7,13 +9,14 @@
 @source '../**/*.blade.php';
 @source '../**/*.js';
 
+/* Design Tokens (Custom CSS Variables) */
 @theme {
-    /* Fonts */
+    /* Font families */
     --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
     --font-lexend: "Lexend", ui-sans-serif, system-ui, sans-serif;
     --font-inter: "Inter", ui-sans-serif, system-ui, sans-serif;
 
-    /* Slate */
+    /* Palet warna "Midnight" untuk background gelap */
     --color-midnight-50: oklch(98% 0.015 260);
     --color-midnight-100: oklch(95% 0.025 260);
     --color-midnight-200: oklch(88% 0.04 260);
@@ -26,16 +29,16 @@
     --color-midnight-900: oklch(16% 0.1 260);
     --color-midnight-950: oklch(10% 0.07 260);
 
-    /* Custom emerald tones */
+    /* Warna emerald khusus Hero section */
     --color-emerald-hero: oklch(62% 0.22 162);
 
-    /* Custom cursor */
+    /* Ukuran kursor custom (referensi) */
     --cursor-size: 20px;
 }
 
-/* Custom utility classes */
+/* Custom Utility Classes */
 
-/* Button: emerald gradient */
+/* Tombol dengan gradient emerald */
 .btn-emerald {
     background: linear-gradient(135deg, #10b981, #059669);
     box-shadow: 0 10px 30px rgb(16 185 129 / 0.3);
@@ -47,13 +50,13 @@
     box-shadow: 0 14px 35px rgb(16 185 129 / 0.4);
 }
 
-/* Glassmorphism helper */
+/* Glassmorphism */
 .glassmorphism {
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
 }
 
-/* Text truncation helpers */
+/* Text Truncation Helpers */
 .line-clamp-1 {
     display: -webkit-box;
     -webkit-line-clamp: 1;
@@ -73,8 +76,9 @@
     overflow: hidden;
 }
 
-/* Animations */
+/* Custom Animations */
 
+/* Float */
 @keyframes float {
     0%,
     100% {
@@ -88,6 +92,7 @@
     animation: float 6s ease-in-out infinite;
 }
 
+/* Pulse Hero */
 @keyframes pulse-hero {
     0%,
     100% {
@@ -103,6 +108,7 @@
     animation: pulse-hero 4s ease-in-out infinite;
 }
 
+/* Slide In Top Flash Message */
 @keyframes slide-in-top {
     from {
         opacity: 0;
@@ -117,7 +123,7 @@
     animation: slide-in-top 0.35s ease-out both;
 }
 
-/* Custom scrollbar */
+/* Custom Scrollbar */
 ::-webkit-scrollbar {
     width: 8px;
 }

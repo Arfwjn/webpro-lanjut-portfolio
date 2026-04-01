@@ -7,7 +7,7 @@ use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\Admin\DashboardController;
 
-// Home — gunakan profil aktif, fallback ke profil pertama
+// Home (gunakan profil aktif, fallback ke profil pertama)
 Route::get('/', function () {
     $projects = \App\Models\Project::latest()->take(6)->get();
     $profile  = \App\Models\Profile::getActive();

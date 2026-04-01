@@ -10,9 +10,13 @@
                 <h1 class="font-lexend text-4xl font-bold mb-1">Projects</h1>
                 <p class="text-gray-500 dark:text-gray-400">Kelola semua proyek portfolio</p>
             </div>
+            {{-- Tombol tambah proyek --}}
             <a href="{{ route('admin.projects.create') }}"
-               class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-3 px-8 rounded-2xl transition-all shadow-lg hover:shadow-emerald-500/25">
-                + Tambah Proyek
+               class="inline-flex items-center gap-2 bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-3 px-8 rounded-2xl transition-all shadow-lg hover:shadow-emerald-500/25">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                </svg>
+                Tambah Proyek
             </a>
         </div>
 
@@ -104,7 +108,10 @@
                 <h3 class="text-2xl font-bold mb-2">Belum ada proyek</h3>
                 <p class="text-gray-500 dark:text-gray-400 mb-8">Mulai tambahkan proyek pertama Anda</p>
                 <a href="{{ route('admin.projects.create') }}"
-                   class="inline-block bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-3 px-10 rounded-2xl transition-all shadow-lg">
+                   class="inline-flex items-center gap-2 bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-3 px-10 rounded-2xl transition-all shadow-lg">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                    </svg>
                     Tambah Proyek Pertama
                 </a>
             </div>

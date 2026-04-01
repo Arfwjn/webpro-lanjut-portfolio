@@ -15,7 +15,7 @@
 @endphp
 
 <div class="py-12">
-    <div class="container mx-auto px-6 max-w-3xl">        
+    <div class="container mx-auto px-6 max-w-3xl">
         <div class="flex items-center gap-4">
             <a href="{{ route('admin.profiles.index') }}"
             class="group inline-flex items-center gap-2 text-slate-500 hover:text-gray-600 font-sm transition-colors">
@@ -23,7 +23,7 @@
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12l4-4m-4 4 4 4"/>
                 </svg>
                 <span class="text-sm">Kembali ke Profil</span>
-            </a>            
+            </a>
         </div>
         <div class="flex items-center justify-center">
             <h1 class="my-2 font-lexend text-3xl font-bold">Edit Profil</h1>
@@ -35,7 +35,7 @@
             @csrf
             @method('PUT')
 
-            {{-- ── CARD: Profil Dasar ─────────────────────────────────────────── --}}
+            {{-- CARD: Profil Dasar --}}
             <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-xl p-10 border border-gray-100 dark:border-gray-700 space-y-6">
                 <h2 class="font-lexend text-lg font-bold text-gray-700 dark:text-gray-200 flex items-center gap-2">
                     <span class="w-7 h-7 rounded-lg bg-emerald-100 dark:bg-emerald-900/40 flex items-center justify-center text-emerald-600 dark:text-emerald-400 text-xs font-black">1</span>
@@ -106,7 +106,7 @@
                 </div>
             </div>
 
-            {{-- ── CARD: About — Experience ───────────────────────────────────── --}}
+            {{-- CARD: About Experience --}}
             <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-xl p-10 border border-gray-100 dark:border-gray-700 space-y-5">
                 <div class="flex items-center justify-between">
                     <h2 class="font-lexend text-lg font-bold text-gray-700 dark:text-gray-200 flex items-center gap-2">
@@ -116,6 +116,7 @@
                     <span class="text-xs text-gray-400">Ditampilkan di kartu "Experience"</span>
                 </div>
 
+                {{-- Container baris experience --}}
                 <div id="experience-container" class="space-y-3">
                     @foreach ($aboutData['experience'] as $idx => $exp)
                         <div class="flex gap-2 items-start experience-row">
@@ -129,18 +130,27 @@
                                        placeholder="Periode (misal: 2025 - Sekarang)"
                                        class="px-4 py-2.5 rounded-xl border-2 border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-slate-700 focus:border-emerald-500 outline-none transition-all text-sm">
                             </div>
+                            {{-- Tombol hapus baris (SVG X) --}}
                             <button type="button" onclick="removeRow(this, 'experience-container')"
-                                    class="px-3 py-2.5 text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-900/20 rounded-xl transition-colors shrink-0">✕</button>
+                                    class="p-2.5 text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-900/20 rounded-xl transition-colors shrink-0" aria-label="Hapus baris">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/>
+                                </svg>
+                            </button>
                         </div>
                     @endforeach
                 </div>
+                {{-- Tombol tambah baris (SVG plus) --}}
                 <button type="button" onclick="addExperience()"
-                        class="px-4 py-2 text-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 rounded-xl text-sm font-medium transition-colors">
-                    + Tambah Pengalaman
+                        class="inline-flex items-center gap-1.5 px-4 py-2 text-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 rounded-xl text-sm font-medium transition-colors">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                    </svg>
+                    Tambah Pengalaman
                 </button>
             </div>
 
-            {{-- ── CARD: About — Education & Skills ───────────────────────────── --}}
+            {{-- CARD: About Education & Skills --}}
             <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-xl p-10 border border-gray-100 dark:border-gray-700 space-y-5">
                 <div class="flex items-center justify-between">
                     <h2 class="font-lexend text-lg font-bold text-gray-700 dark:text-gray-200 flex items-center gap-2">
@@ -175,18 +185,25 @@
                                        placeholder="Nama teknologi"
                                        class="flex-1 px-4 py-2.5 rounded-xl border-2 border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-slate-700 focus:border-emerald-500 outline-none transition-all text-sm">
                                 <button type="button" onclick="removeRow(this, 'skills-container')"
-                                        class="px-3 py-2 text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-900/20 rounded-xl transition-colors">✕</button>
+                                        class="p-2 text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-900/20 rounded-xl transition-colors" aria-label="Hapus">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/>
+                                    </svg>
+                                </button>
                             </div>
                         @endforeach
                     </div>
                     <button type="button" onclick="addSkill()"
-                            class="mt-2 px-4 py-2 text-sky-600 hover:bg-sky-50 dark:hover:bg-sky-900/20 rounded-xl text-sm font-medium transition-colors">
-                        + Tambah Skill
+                            class="mt-2 inline-flex items-center gap-1.5 px-4 py-2 text-sky-600 hover:bg-sky-50 dark:hover:bg-sky-900/20 rounded-xl text-sm font-medium transition-colors">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                        </svg>
+                        Tambah Skill
                     </button>
                 </div>
             </div>
 
-            {{-- ── CARD: About — Interests ─────────────────────────────────────── --}}
+            {{-- CARD: About Interests --}}
             <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-xl p-10 border border-gray-100 dark:border-gray-700 space-y-5">
                 <div class="flex items-center justify-between">
                     <h2 class="font-lexend text-lg font-bold text-gray-700 dark:text-gray-200 flex items-center gap-2">
@@ -203,17 +220,24 @@
                                    placeholder="Bidang minat"
                                    class="flex-1 px-4 py-2.5 rounded-xl border-2 border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-slate-700 focus:border-emerald-500 outline-none transition-all text-sm">
                             <button type="button" onclick="removeRow(this, 'interests-container')"
-                                    class="px-3 py-2 text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-900/20 rounded-xl transition-colors">✕</button>
+                                    class="p-2 text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-900/20 rounded-xl transition-colors" aria-label="Hapus">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/>
+                                </svg>
+                            </button>
                         </div>
                     @endforeach
                 </div>
                 <button type="button" onclick="addInterest()"
-                        class="px-4 py-2 text-purple-600 hover:bg-purple-50 dark:hover:bg-purple-900/20 rounded-xl text-sm font-medium transition-colors">
-                    + Tambah Interest
+                        class="inline-flex items-center gap-1.5 px-4 py-2 text-purple-600 hover:bg-purple-50 dark:hover:bg-purple-900/20 rounded-xl text-sm font-medium transition-colors">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                    </svg>
+                    Tambah Interest
                 </button>
             </div>
 
-            {{-- ── CARD: About — Stats ─────────────────────────────────────────── --}}
+            {{-- CARD: About Stats --}}
             <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-xl p-10 border border-gray-100 dark:border-gray-700 space-y-5">
                 <div class="flex items-center justify-between">
                     <h2 class="font-lexend text-lg font-bold text-gray-700 dark:text-gray-200 flex items-center gap-2">
@@ -240,7 +264,7 @@
                 </div>
             </div>
 
-            {{-- ── CARD: Learning Journey (Roadmap) ───────────────────────────── --}}
+            {{-- CARD: Learning Journey (Roadmap) --}}
             <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-xl p-10 border border-gray-100 dark:border-gray-700 space-y-5">
                 <div class="flex items-center justify-between">
                     <h2 class="font-lexend text-lg font-bold text-gray-700 dark:text-gray-200 flex items-center gap-2">
@@ -286,7 +310,7 @@
                 </div>
             </div>
 
-            {{-- ── Submit ───────────────────────────────────────────────────────── --}}
+            {{-- Submit ─--}}
             <div class="flex gap-4 pt-2 pb-8">
                 <button type="submit"
                         class="px-8 py-3 bg-emerald-500 hover:bg-emerald-600 text-white rounded-2xl font-semibold transition-all shadow-lg hover:shadow-emerald-500/30">
@@ -302,7 +326,8 @@
 </div>
 
 <script>
-// ── Avatar Preview ────────────────────────────────────────────────────────────
+// Avatar Preview
+// Ganti preview avatar saat user pilih file baru.
 const avatarInput   = document.getElementById('avatar-input');
 const avatarPreview = document.getElementById('avatar-preview');
 
@@ -324,7 +349,8 @@ avatarInput?.addEventListener('change', function () {
     reader.readAsDataURL(file);
 });
 
-// ── Generic Row Removal ───────────────────────────────────────────────────────
+// Generic Row Removal
+// Hapus baris input dinamis dari container.
 function removeRow(btn, containerId) {
     const container = document.getElementById(containerId);
     const rows = container.querySelectorAll('[class*="-row"]');
@@ -333,17 +359,22 @@ function removeRow(btn, containerId) {
     reIndexRows(container);
 }
 
+// Re-index nama field experience setelah baris dihapus (agar index tetap berurutan)
 function reIndexRows(container) {
-    // Re-index experience rows
     container.querySelectorAll('.experience-row').forEach((row, i) => {
         row.querySelectorAll('[name]').forEach(input => {
             input.name = input.name.replace(/\[experience\]\[\d+\]/, `[experience][${i}]`);
         });
     });
-    // Re-index skill/interest rows (flat arrays — no index needed)
 }
 
-// ── Experience ────────────────────────────────────────────────────────────────
+// SVG X
+const svgX = `
+    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/>
+    </svg>`;
+
+// Experience
 function addExperience() {
     const container = document.getElementById('experience-container');
     const idx = container.querySelectorAll('.experience-row').length;
@@ -359,11 +390,13 @@ function addExperience() {
                    class="px-4 py-2.5 rounded-xl border-2 border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-slate-700 focus:border-emerald-500 outline-none transition-all text-sm">
         </div>
         <button type="button" onclick="removeRow(this,'experience-container')"
-                class="px-3 py-2.5 text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-900/20 rounded-xl transition-colors shrink-0">✕</button>`;
+                class="p-2.5 text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-900/20 rounded-xl transition-colors shrink-0" aria-label="Hapus baris">
+            ${svgX}
+        </button>`;
     container.appendChild(div);
 }
 
-// ── Skills ────────────────────────────────────────────────────────────────────
+// Skills
 function addSkill() {
     const container = document.getElementById('skills-container');
     const div = document.createElement('div');
@@ -372,11 +405,13 @@ function addSkill() {
         <input type="text" name="about[skills][]" placeholder="Nama teknologi"
                class="flex-1 px-4 py-2.5 rounded-xl border-2 border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-slate-700 focus:border-emerald-500 outline-none transition-all text-sm">
         <button type="button" onclick="removeRow(this,'skills-container')"
-                class="px-3 py-2 text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-900/20 rounded-xl transition-colors">✕</button>`;
+                class="p-2 text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-900/20 rounded-xl transition-colors" aria-label="Hapus">
+            ${svgX}
+        </button>`;
     container.appendChild(div);
 }
 
-// ── Interests ─────────────────────────────────────────────────────────────────
+// Interests
 function addInterest() {
     const container = document.getElementById('interests-container');
     const div = document.createElement('div');
@@ -385,7 +420,9 @@ function addInterest() {
         <input type="text" name="about[interests][]" placeholder="Bidang minat"
                class="flex-1 px-4 py-2.5 rounded-xl border-2 border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-slate-700 focus:border-emerald-500 outline-none transition-all text-sm">
         <button type="button" onclick="removeRow(this,'interests-container')"
-                class="px-3 py-2 text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-900/20 rounded-xl transition-colors">✕</button>`;
+                class="p-2 text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-900/20 rounded-xl transition-colors" aria-label="Hapus">
+            ${svgX}
+        </button>`;
     container.appendChild(div);
 }
 </script>

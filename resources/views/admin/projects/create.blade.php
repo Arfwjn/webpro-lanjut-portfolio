@@ -8,23 +8,16 @@
         <div class="flex items-center gap-4">
             <a href="{{ route('admin.projects.index') }}"
             class="group inline-flex items-center gap-2 text-slate-500 hover:text-gray-600 font-sm transition-colors">
-                
-                {{-- Ikon Panah Kembali --}}
-                <svg class="w-5 h-5 transition-transform group-hover:-translate-x-1" 
+                <svg class="w-5 h-5 transition-transform group-hover:-translate-x-1"
                     aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12l4-4m-4 4 4 4"/>
                 </svg>
-
                 <span class="text-sm">Kembali ke Proyek</span>
-            </a>            
+            </a>
         </div>
         <div class="flex items-center justify-center">
-            <h1 class="my-2 font-lexend text-3xl font-bold">
-                Tambah Proyek Baru
-            </h1>
+            <h1 class="my-2 font-lexend text-3xl font-bold">Tambah Proyek Baru</h1>
         </div>
-
-        
 
         <form method="POST" action="{{ route('admin.projects.store') }}"
               enctype="multipart/form-data"
@@ -58,6 +51,7 @@
 
                 <div class="md:col-span-2">
                     <label class="block text-sm font-semibold mb-2 text-gray-700 dark:text-gray-300">Tech Stack *</label>
+                    {{-- Container baris tech stack --}}
                     <div id="tech-stack-container" class="space-y-2">
                         @if (old('tech_stack'))
                             @foreach (old('tech_stack') as $i => $tech)
@@ -65,8 +59,13 @@
                                     <input type="text" name="tech_stack[]" value="{{ $tech }}"
                                            class="flex-1 px-5 py-3 rounded-xl border-2 border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-slate-700 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/20 outline-none transition-all"
                                            placeholder="Contoh: Laravel, Vue.js, MySQL...">
+                                    {{-- Tombol hapus baris (SVG X) --}}
                                     <button type="button" onclick="this.parentElement.remove()"
-                                            class="px-4 py-3 text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-900/20 rounded-xl transition-colors">✕</button>
+                                            class="p-3 text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-900/20 rounded-xl transition-colors" aria-label="Hapus">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/>
+                                        </svg>
+                                    </button>
                                 </div>
                             @endforeach
                         @else
@@ -75,13 +74,21 @@
                                        class="flex-1 px-5 py-3 rounded-xl border-2 border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-slate-700 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/20 outline-none transition-all"
                                        placeholder="Contoh: Laravel, Vue.js, MySQL...">
                                 <button type="button" onclick="this.parentElement.remove()"
-                                        class="px-4 py-3 text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-900/20 rounded-xl transition-colors">✕</button>
+                                        class="p-3 text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-900/20 rounded-xl transition-colors" aria-label="Hapus">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/>
+                                    </svg>
+                                </button>
                             </div>
                         @endif
                     </div>
+                    {{-- Tombol tambah baris tech stack (SVG plus) --}}
                     <button type="button" onclick="addTech()"
-                            class="mt-2 px-4 py-2 text-emerald-500 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 rounded-xl text-sm font-medium transition-colors">
-                        + Tambah Teknologi
+                            class="mt-2 inline-flex items-center gap-1.5 px-4 py-2 text-emerald-500 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 rounded-xl text-sm font-medium transition-colors">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                        </svg>
+                        Tambah Teknologi
                     </button>
                     @error('tech_stack') <p class="text-rose-500 text-sm mt-1">{{ $message }}</p> @enderror
                 </div>
@@ -138,6 +145,10 @@
 </div>
 
 <script>
+/**
+ * Tambah baris input tech stack baru ke dalam container.
+ * Tombol hapus (SVG X) di tiap baris menghapus baris itu sendiri via onclick.
+ */
 function addTech() {
     const container = document.getElementById('tech-stack-container');
     const div = document.createElement('div');
@@ -147,7 +158,11 @@ function addTech() {
                class="flex-1 px-5 py-3 rounded-xl border-2 border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-slate-700 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/20 outline-none transition-all"
                placeholder="Contoh: Laravel, Vue.js...">
         <button type="button" onclick="this.parentElement.remove()"
-                class="px-4 py-3 text-rose-500 hover:bg-rose-50 rounded-xl transition-colors">✕</button>
+                class="p-3 text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-900/20 rounded-xl transition-colors" aria-label="Hapus">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+        </button>
     `;
     container.appendChild(div);
 }

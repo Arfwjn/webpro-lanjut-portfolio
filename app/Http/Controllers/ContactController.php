@@ -5,8 +5,19 @@ namespace App\Http\Controllers;
 use App\Models\ContactMessage;
 use Illuminate\Http\Request;
 
+/**
+ * ContactController — Terima dan simpan pesan dari form kontak publik.
+ *
+ * Hanya punya satu method (store) karena form kontak tidak butuh CRUD penuh.
+ * Pesan yang masuk bisa dikelola admin via Admin\MessageController.
+ */
 class ContactController extends Controller
 {
+    /**
+     * Validasi dan simpan pesan masuk ke database.
+     * IP pengirim disimpan untuk keperluan audit/anti-spam dasar.
+     * Setelah sukses, redirect ke section #contact di homepage dengan flash message.
+     */
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -15,7 +26,6 @@ class ContactController extends Controller
             'message' => 'required|string|max:5000',
         ]);
 
-        // Simpan pesan contact ke DB beserta IP pengirim
         ContactMessage::create([
             'name'       => $validated['name'],
             'email'      => $validated['email'],
