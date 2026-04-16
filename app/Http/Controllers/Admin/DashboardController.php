@@ -8,7 +8,7 @@ use App\Models\Profile;
 use App\Models\Project;
 use Illuminate\Http\Request;
 
-// DashboardController — Single Action Controller untuk halaman admin utama.
+// DashboardController: Single Action Controller untuk halaman admin utama.
 class DashboardController extends Controller
 {
     public function __invoke(Request $request)

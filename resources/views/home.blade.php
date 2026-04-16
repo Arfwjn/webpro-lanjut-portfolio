@@ -115,7 +115,7 @@
                                       font-semibold text-lg rounded-2xl hover:bg-emerald-500 hover:text-white
                                       transition-all duration-300 hover:-translate-y-1">
                                 Hubungi Saya
-                            </a>
+                            </a>                             
                         </div>
                     </div>
                 </div>
