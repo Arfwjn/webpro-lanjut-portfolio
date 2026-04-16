@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectController;
@@ -21,8 +22,10 @@ Route::post('/contact', [ContactController::class, 'store'])->name('contact.stor
 Route::resource('profiles', ProfileController::class)->only(['index', 'show']);
 Route::resource('projects', ProjectController::class)->only(['index', 'show']);
 
-// Auth Routes
+// Auth Routes (hanya untuk tamu / belum login)
 Route::middleware('guest')->group(function () {
+
+    // Login
     Route::get('/login', function () {
         return view('auth.login');
     })->name('login');
@@ -41,6 +44,31 @@ Route::middleware('guest')->group(function () {
         return back()
             ->withErrors(['email' => 'Email atau password salah.'])
             ->onlyInput('email');
+    });
+
+    // Register
+    Route::get('/register', function () {
+        return view('auth.register');
+    })->name('register');
+
+    Route::post('/register', function (Request $request) {
+        $validated = $request->validate([
+            'name'     => ['required', 'string', 'max:255'],
+            'email'    => ['required', 'email', 'max:255', 'unique:users,email'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+        ]);
+
+        $user = \App\Models\User::create([
+            'name'     => $validated['name'],
+            'email'    => $validated['email'],
+            'password' => Hash::make($validated['password']),
+        ]);
+
+        auth()->login($user);
+        $request->session()->regenerate();
+
+        return redirect()->route('admin.dashboard')
+            ->with('success', 'Akun berhasil dibuat. Selamat datang, ' . $user->name . '!');
     });
 });
 

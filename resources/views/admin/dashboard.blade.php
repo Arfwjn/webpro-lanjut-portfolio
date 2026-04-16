@@ -21,8 +21,9 @@
 
             {{-- Profiles Card --}}
             <a href="{{ route('admin.profiles.index') }}">
-                <div class="bg-white dark:bg-slate-800 p-7 rounded-3xl shadow-lg border border-gray-100 dark:border-slate-700
-                            hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300">
+                <div class="relative bg-white dark:bg-slate-800 p-7 rounded-3xl shadow-lg border border-gray-100 dark:border-slate-700
+                       hover:shadow-xl hover:border-indigo-300 dark:hover:border-indigo-700 hover:shadow-indigo-500/30
+                       hover:-translate-y-0.5 transition-all duration-300">
                     <div class="flex items-center gap-4">
                         <div class="w-14 h-14 bg-emerald-100 dark:bg-emerald-900/40 rounded-2xl flex items-center justify-center">
                             <svg class="w-7 h-7 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -39,8 +40,9 @@
 
             {{-- Projects Card --}}
             <a href="{{ route('admin.projects.index') }}">
-                <div class="bg-white dark:bg-slate-800 p-7 rounded-3xl shadow-lg border border-gray-100 dark:border-slate-700
-                            hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300">
+                <div class="relative bg-white dark:bg-slate-800 p-7 rounded-3xl shadow-lg border border-gray-100 dark:border-slate-700
+                       hover:shadow-xl hover:border-indigo-300 dark:hover:border-indigo-700 hover:shadow-indigo-500/30
+                       hover:-translate-y-0.5 transition-all duration-300">
                     <div class="flex items-center gap-4">
                         <div class="w-14 h-14 bg-sky-100 dark:bg-sky-900/40 rounded-2xl flex items-center justify-center">
                             <svg class="w-7 h-7 text-sky-600 dark:text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -58,7 +60,7 @@
             {{-- Messages Card --}}
             <a href="{{ route('admin.messages.index') }}"
                class="relative bg-white dark:bg-slate-800 p-7 rounded-3xl shadow-lg border border-gray-100 dark:border-slate-700
-                       hover:shadow-xl hover:border-indigo-300 dark:hover:border-indigo-700
+                       hover:shadow-xl hover:border-indigo-300 dark:hover:border-indigo-700 hover:shadow-indigo-500/30
                        hover:-translate-y-0.5 transition-all duration-300">
                 @if ($unreadCount > 0)
                     <span class="absolute top-4 right-4 bg-rose-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">
@@ -78,6 +80,7 @@
                 </div>
             </a>
 
+            {{-- Portfolio Direct Card --}}
             <a href="{{ route('home') }}" target="_blank"
                class="bg-gradient-to-br from-emerald-500 to-emerald-600 p-7 rounded-3xl shadow-lg
                       hover:shadow-emerald-500/30 hover:-translate-y-0.5 transition-all duration-300">

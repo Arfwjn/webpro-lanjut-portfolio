@@ -105,18 +105,26 @@
                     Masuk
                 </button>
             </form>
+
+            {{-- Divider + Register Link --}}
+            <div class="mt-8 pt-6 border-t border-gray-100 dark:border-slate-700 text-center">
+                <p class="text-sm text-gray-500 dark:text-gray-400">
+                    Belum punya akun?
+                    <a href="{{ route('register') }}"
+                       class="font-semibold text-emerald-500 hover:text-emerald-600 transition-colors ml-1">
+                        Daftar di sini
+                    </a>
+                </p>
+            </div>
         </div>
 
         <p class="text-center mt-6 text-sm text-gray-500">           
             <a href="{{ route('home') }}"
             class="group inline-flex items-center gap-2 text-slate-500 hover:text-gray-600 font-sm transition-colors">
-                
-                {{-- Ikon Panah Kembali --}}
                 <svg class="w-5 h-5 transition-transform group-hover:-translate-x-1" 
                     aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12l4-4m-4 4 4 4"/>
                 </svg>
-
                 <span class="text-sm">Kembali ke Portfolio</span>
             </a>
         </p>
@@ -137,11 +145,9 @@
             const isHidden = input.type === 'password';
             input.type = isHidden ? 'text' : 'password';
 
-            // Tukar ikon
             iconEye.classList.toggle('hidden', isHidden);
             iconSlash.classList.toggle('hidden', !isHidden);
 
-            // Kembalikan fokus ke input agar UX tetap smooth
             input.focus();
         });
     })();
