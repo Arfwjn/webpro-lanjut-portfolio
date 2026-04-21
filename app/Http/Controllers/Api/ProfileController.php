@@ -68,11 +68,32 @@ class ProfileController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
-        //
+        try {
+            $profile = Profile::find($id);
+
+            if (!$profile) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Profil tidak ditemukan'
+                ], 404);
+            }
+
+            $profile->delete();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Profil berhasil dihapus'
+            ], 200);
+
+        } catch (\Exception $e) {
+            Log::error('Error deleting profile: ' . $e->getMessage());
+            
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan pada server saat menghapus data.',
+            ], 500);
+        }
     }
 }
