@@ -5,7 +5,7 @@
 @section('content')
 <div class="py-20">
     <div class="container mx-auto px-6 max-w-4xl">
-        <a href="{{ route('admin.messages.index') }}"
+        <a href="{{ route('profiles.index') }}"
         class="group inline-flex items-center gap-2 text-indigo-500 hover:text-indigo-600 font-medium transition-colors">
             
             {{-- Ikon Panah Kembali --}}

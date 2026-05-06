@@ -49,6 +49,9 @@
                                @error('name') border-rose-500 @enderror"
                         placeholder="Nama Anda"
                     >
+                    @error('name')
+                        <p class="text-rose-500 text-sm mt-1.5">{{ $message }}</p>
+                    @enderror
                 </div>
 
                 {{-- Email --}}
@@ -69,6 +72,42 @@
                                @error('email') border-rose-500 @enderror"
                         placeholder="admin@example.com"
                     >
+                    @error('email')
+                        <p class="text-rose-500 text-sm mt-1.5">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                {{-- Phone --}}
+                <div>
+                    <label for="phone" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                        Nomor HP
+                        <span class="text-gray-400 font-normal text-xs ml-1">(opsional)</span>
+                    </label>
+                    <div class="flex gap-2">
+                        {{-- Kode negara --}}
+                        <div class="flex items-center gap-2 px-4 py-4 rounded-2xl bg-gray-50 dark:bg-slate-700
+                                    border-2 border-gray-200 dark:border-gray-600 shrink-0">
+                            <span class="text-base">🇮🇩</span>
+                            <span class="text-sm font-semibold text-gray-600 dark:text-gray-400">+62</span>
+                        </div>
+                        <input
+                            type="tel"
+                            id="phone"
+                            name="phone"
+                            value="{{ old('phone') }}"
+                            class="flex-1 px-5 py-4 rounded-2xl bg-gray-50 dark:bg-slate-700
+                                   border-2 border-gray-200 dark:border-gray-600
+                                   focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/20
+                                   transition-all duration-200 text-base outline-none
+                                   @error('phone') border-rose-500 @enderror"
+                            placeholder="812 3456 7890"
+                            inputmode="numeric"
+                            pattern="[0-9\s\-]+"
+                        >
+                    </div>
+                    @error('phone')
+                        <p class="text-rose-500 text-sm mt-1.5">{{ $message }}</p>
+                    @enderror
                 </div>
 
                 {{-- Password + Peek --}}
@@ -113,6 +152,9 @@
                             </svg>
                         </button>
                     </div>
+                    @error('password')
+                        <p class="text-rose-500 text-sm mt-1.5">{{ $message }}</p>
+                    @enderror
                 </div>
 
                 {{-- Password Confirmation --}}
@@ -129,8 +171,7 @@
                             class="w-full px-5 py-4 pr-14 rounded-2xl bg-gray-50 dark:bg-slate-700
                                 border-2 border-gray-200 dark:border-gray-600
                                 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/20
-                                transition-all duration-200 text-base outline-none
-                                @error('password_confirmation') border-rose-500 @enderror"
+                                transition-all duration-200 text-base outline-none"
                             placeholder="Ulangi password"
                         >
                         <button
@@ -172,7 +213,7 @@
                 </button>
             </form>
 
-            {{-- Divider + Login Link --}}
+            {{-- Login Link --}}
             <div class="mt-8 pt-6 border-t border-gray-100 dark:border-slate-700 text-center">
                 <p class="text-sm text-gray-500 dark:text-gray-400">
                     Sudah punya akun?
@@ -186,9 +227,9 @@
 
         <p class="text-center mt-6">
             <a href="{{ route('home') }}"
-               class="group inline-flex items-center gap-2 text-slate-500 hover:text-gray-600 font-sm transition-colors">
+               class="group inline-flex items-center gap-2 text-slate-500 hover:text-gray-600 transition-colors">
                 <svg class="w-5 h-5 transition-transform group-hover:-translate-x-1"
-                    aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12l4-4m-4 4 4 4"/>
                 </svg>
                 <span class="text-sm">Kembali ke Portfolio</span>
@@ -197,40 +238,27 @@
     </div>
 </div>
 
-{{-- Script peek password --}}
 <script>
-    (function () {
-        // Password field
-        const btnPw      = document.getElementById('toggle-password');
-        const inputPw    = document.getElementById('password');
-        const eyePw      = document.getElementById('icon-eye');
-        const slashPw    = document.getElementById('icon-eye-slash');
+(function () {
+    function togglePeek(btnId, inputId, eyeId, slashId) {
+        const btn   = document.getElementById(btnId);
+        const input = document.getElementById(inputId);
+        const eye   = document.getElementById(eyeId);
+        const slash = document.getElementById(slashId);
 
-        if (btnPw && inputPw) {
-            btnPw.addEventListener('click', function () {
-                const isHidden = inputPw.type === 'password';
-                inputPw.type = isHidden ? 'text' : 'password';
-                eyePw.classList.toggle('hidden', isHidden);
-                slashPw.classList.toggle('hidden', !isHidden);
-                inputPw.focus();
-            });
-        }
+        if (!btn || !input) return;
 
-        // Confirm password field
-        const btnCf   = document.getElementById('toggle-confirm');
-        const inputCf = document.getElementById('password_confirmation');
-        const eyeCf   = document.getElementById('icon-eye-confirm');
-        const slashCf = document.getElementById('icon-eye-slash-confirm');
+        btn.addEventListener('click', function () {
+            const isHidden = input.type === 'password';
+            input.type = isHidden ? 'text' : 'password';
+            eye.classList.toggle('hidden', isHidden);
+            slash.classList.toggle('hidden', !isHidden);
+            input.focus();
+        });
+    }
 
-        if (btnCf && inputCf) {
-            btnCf.addEventListener('click', function () {
-                const isHidden = inputCf.type === 'password';
-                inputCf.type = isHidden ? 'text' : 'password';
-                eyeCf.classList.toggle('hidden', isHidden);
-                slashCf.classList.toggle('hidden', !isHidden);
-                inputCf.focus();
-            });
-        }
-    })();
+    togglePeek('toggle-password', 'password', 'icon-eye', 'icon-eye-slash');
+    togglePeek('toggle-confirm', 'password_confirmation', 'icon-eye-confirm', 'icon-eye-slash-confirm');
+})();
 </script>
 @endsection

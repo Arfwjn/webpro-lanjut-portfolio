@@ -6,15 +6,12 @@
 <div class="py-20">
     <div class="container mx-auto px-6 max-w-4xl">
         <a href="{{ route('projects.index') }}"
-            class="py-4 group inline-flex items-center gap-2 text-slate-500 hover:text-gray-600 font-sm transition-colors">
-                
-                {{-- Ikon Panah Kembali --}}
-                <svg class="w-5 h-5 transition-transform group-hover:-translate-x-1" 
-                    aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12l4-4m-4 4 4 4"/>
-                </svg>
-
-                <span class="text-sm">Semua Proyek</span>
+            class="py-4 group inline-flex items-center gap-2 text-slate-500 hover:text-gray-600 transition-colors">
+            <svg class="w-5 h-5 transition-transform group-hover:-translate-x-1"
+                aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12l4-4m-4 4 4 4"/>
+            </svg>
+            <span class="text-sm">Semua Proyek</span>
         </a>
 
         @if ($project->image_path)
@@ -52,28 +49,28 @@
 
             @if ($project->live_link || $project->github_link)
                 <div class="flex flex-wrap gap-4">
-                    @if ($project->live_link)                       
-                        <a href="{{ $project->github_link }}" target="_blank"
-                           class="px-8 py-3 inline-flex items-center gap-1.5 bg-emerald-500 hover:bg-emerald-600 text-white rounded-2xl rounded-2xl font-semibold transition-transform hover:translate-x-0.5 hover:-translate-y-0.5">
+
+                    {{-- FIX: Sebelumnya salah mengarah ke $project->github_link --}}
+                    @if ($project->live_link)
+                        <a href="{{ $project->live_link }}" target="_blank" rel="noopener"
+                           class="px-8 py-3 inline-flex items-center gap-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-2xl font-semibold transition-all hover:-translate-y-0.5">
                             <span>Lihat Live</span>
-                                {{-- Ikon Share/Arrow Custom --}}
-                                <svg class="w-4 h-4" 
-                                    aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4.248 19C3.22 15.77 5.275 8.232 12.466 8.232V6.079a1.025 1.025 0 0 1 1.644-.862l5.479 4.307a1.108 1.108 0 0 1 0 1.723l-5.48 4.307a1.026 1.026 0 0 1-1.643-.861v-2.154C5.275 13.616 4.248 19 4.248 19Z"/>
-                                </svg>
+                            <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4.248 19C3.22 15.77 5.275 8.232 12.466 8.232V6.079a1.025 1.025 0 0 1 1.644-.862l5.479 4.307a1.108 1.108 0 0 1 0 1.723l-5.48 4.307a1.026 1.026 0 0 1-1.643-.861v-2.154C5.275 13.616 4.248 19 4.248 19Z"/>
+                            </svg>
                         </a>
                     @endif
+
                     @if ($project->github_link)
-                        <a href="{{ $project->github_link }}" target="_blank"
-                           class="px-8 py-3 inline-flex items-center gap-1.5 bg-gray-800 hover:bg-gray-900 text-white rounded-2xl font-semibold transition-transform hover:translate-x-0.5 hover:-translate-y-0.5">
+                        <a href="{{ $project->github_link }}" target="_blank" rel="noopener"
+                           class="px-8 py-3 inline-flex items-center gap-2 bg-gray-800 hover:bg-gray-900 text-white rounded-2xl font-semibold transition-all hover:-translate-y-0.5">
                             <span>GitHub</span>
-                                {{-- Ikon Share/Arrow Custom --}}
-                                <svg class="w-4 h-4" 
-                                    aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4.248 19C3.22 15.77 5.275 8.232 12.466 8.232V6.079a1.025 1.025 0 0 1 1.644-.862l5.479 4.307a1.108 1.108 0 0 1 0 1.723l-5.48 4.307a1.026 1.026 0 0 1-1.643-.861v-2.154C5.275 13.616 4.248 19 4.248 19Z"/>
-                                </svg>
+                            <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4.248 19C3.22 15.77 5.275 8.232 12.466 8.232V6.079a1.025 1.025 0 0 1 1.644-.862l5.479 4.307a1.108 1.108 0 0 1 0 1.723l-5.48 4.307a1.026 1.026 0 0 1-1.643-.861v-2.154C5.275 13.616 4.248 19 4.248 19Z"/>
+                            </svg>
                         </a>
                     @endif
+
                 </div>
             @endif
         </div>
