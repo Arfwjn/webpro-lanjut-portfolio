@@ -14,16 +14,15 @@ class ProjectController extends Controller
     {
         try {
             $projects = Project::with('profile')->latest()->get();
-            
+
             return response()->json([
                 'success' => true,
                 'message' => 'Daftar proyek berhasil diambil',
-                'data'    => $projects
+                'data'    => $projects,
             ], 200);
 
         } catch (\Exception $e) {
             Log::error('Error fetching projects: ' . $e->getMessage());
-            
             return response()->json([
                 'success' => false,
                 'message' => 'Terjadi kesalahan pada server saat mengambil data.',
@@ -37,31 +36,34 @@ class ProjectController extends Controller
             'profile_id'   => 'required|exists:profiles,id',
             'title'        => 'required|string|max:255',
             'description'  => 'required|string',
-            'tech_stack'   => 'required|array|min:1', // Wajib berupa array
+            'tech_stack'   => 'required|array|min:1',
             'tech_stack.*' => 'required|string',
-            'date'         => 'required|date',        
+            'live_link'    => 'nullable|url',
+            'github_link'  => 'nullable|url',
+            'date'         => 'required|date',
         ]);
 
         if ($validator->fails()) {
             return response()->json([
                 'success' => false,
                 'message' => 'Validasi gagal',
-                'errors'  => $validator->errors()
+                'errors'  => $validator->errors(),
             ], 422);
         }
 
         try {
-            $project = Project::create($request->all());
+            // FIX: gunakan validated() bukan $request->all()
+            // agar tidak ada field liar yang masuk ke DB (mass assignment protection)
+            $project = Project::create($validator->validated());
 
             return response()->json([
                 'success' => true,
                 'message' => 'Proyek berhasil dibuat',
-                'data'    => $project
+                'data'    => $project,
             ], 201);
 
         } catch (\Exception $e) {
             Log::error('Error creating project: ' . $e->getMessage());
-            
             return response()->json([
                 'success' => false,
                 'message' => 'Terjadi kesalahan pada server saat menyimpan data.',
@@ -77,19 +79,18 @@ class ProjectController extends Controller
             if (!$project) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Proyek tidak ditemukan'
+                    'message' => 'Proyek tidak ditemukan',
                 ], 404);
             }
 
             return response()->json([
                 'success' => true,
                 'message' => 'Detail proyek berhasil diambil',
-                'data'    => $project
+                'data'    => $project,
             ], 200);
 
         } catch (\Exception $e) {
             Log::error('Error fetching project detail: ' . $e->getMessage());
-            
             return response()->json([
                 'success' => false,
                 'message' => 'Terjadi kesalahan pada server saat mengambil detail data.',
@@ -105,7 +106,7 @@ class ProjectController extends Controller
             if (!$project) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Proyek tidak ditemukan'
+                    'message' => 'Proyek tidak ditemukan',
                 ], 404);
             }
 
@@ -113,30 +114,31 @@ class ProjectController extends Controller
                 'profile_id'   => 'required|exists:profiles,id',
                 'title'        => 'required|string|max:255',
                 'description'  => 'required|string',
-                'tech_stack'   => 'required|array|min:1', 
+                'tech_stack'   => 'required|array|min:1',
                 'tech_stack.*' => 'required|string',
-                'date'         => 'required|date',        
+                'live_link'    => 'nullable|url',
+                'github_link'  => 'nullable|url',
+                'date'         => 'required|date',
             ]);
 
             if ($validator->fails()) {
                 return response()->json([
                     'success' => false,
                     'message' => 'Validasi gagal',
-                    'errors'  => $validator->errors()
+                    'errors'  => $validator->errors(),
                 ], 422);
             }
 
-            $project->update($request->all());
+            $project->update($validator->validated());
 
             return response()->json([
                 'success' => true,
                 'message' => 'Proyek berhasil diperbarui',
-                'data'    => $project
+                'data'    => $project->fresh(),
             ], 200);
 
         } catch (\Exception $e) {
             Log::error('Error updating project: ' . $e->getMessage());
-            
             return response()->json([
                 'success' => false,
                 'message' => 'Terjadi kesalahan pada server saat memperbarui data.',
@@ -152,7 +154,7 @@ class ProjectController extends Controller
             if (!$project) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Proyek tidak ditemukan'
+                    'message' => 'Proyek tidak ditemukan',
                 ], 404);
             }
 
@@ -160,12 +162,11 @@ class ProjectController extends Controller
 
             return response()->json([
                 'success' => true,
-                'message' => 'Proyek berhasil dihapus'
+                'message' => 'Proyek berhasil dihapus',
             ], 200);
 
         } catch (\Exception $e) {
             Log::error('Error deleting project: ' . $e->getMessage());
-            
             return response()->json([
                 'success' => false,
                 'message' => 'Terjadi kesalahan pada server saat menghapus data.',
