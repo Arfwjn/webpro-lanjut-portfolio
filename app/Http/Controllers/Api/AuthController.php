@@ -3,80 +3,61 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\View\View;
+use Illuminate\Support\Facades\Validator;
 
-/**
- * AuthController: Menangani autentikasi web (login, register, logout).
- */
 class AuthController extends Controller
 {
-    // Login
-
-    public function showLogin(): View
+    public function register(Request $request)
     {
-        return view('auth.login');
-    }
-
-    public function login(Request $request): RedirectResponse
-    {
-        $credentials = $request->validate([
-            'email'    => ['required', 'email'],
-            'password' => ['required'],
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8',
         ]);
 
-        if (Auth::attempt($credentials, $request->boolean('remember'))) {
-            $request->session()->regenerate();
-            return redirect()->intended(route('admin.dashboard'));
+        if ($validator->fails()) {
+            return response()->json(['message' => 'Validasi gagal', 'errors' => $validator->errors()], 400);
         }
 
-        return back()
-            ->withErrors(['email' => 'Email atau password salah.'])
-            ->onlyInput('email');
-    }
-
-    // Register
-
-    public function showRegister(): View
-    {
-        return view('auth.register');
-    }
-
-    public function register(Request $request): RedirectResponse
-    {
-        $validated = $request->validate([
-            'name'     => ['required', 'string', 'max:255'],
-            'email'    => ['required', 'email', 'max:255', 'unique:users,email'],
-            'phone'    => ['nullable', 'string', 'max:20'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
-        ]);
-
         $user = User::create([
-            'name'     => $validated['name'],
-            'email'    => $validated['email'],
-            'phone'    => $validated['phone'] ?? null,
-            'password' => Hash::make($validated['password']),
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
         ]);
 
-        Auth::login($user);
-        $request->session()->regenerate();
+        $token = $user->createToken('auth_token')->plainTextToken;
 
-        return redirect()->route('admin.dashboard')
-            ->with('success', 'Akun berhasil dibuat. Selamat datang, ' . $user->name . '!');
+        return response()->json([
+            'message' => 'Registrasi berhasil',
+            'data' => $user,
+            'access_token' => $token,
+            'token_type' => 'Bearer'
+        ], 201);
     }
 
-    // Logout
-
-    public function logout(Request $request): RedirectResponse
+    public function login(Request $request)
     {
-        Auth::logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
 
-        return redirect('/');
+        $user = User::where('email', $request->email)->first();
+
+        if (!$user || !Hash::check($request->password, $user->password)) {
+            return response()->json(['message' => 'Kredensial tidak valid'], 401);
+        }
+
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        return response()->json([
+            'message' => 'Login berhasil',
+            'data' => $user,
+            'access_token' => $token,
+            'token_type' => 'Bearer'
+        ], 200);
     }
 }
