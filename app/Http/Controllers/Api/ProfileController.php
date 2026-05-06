@@ -52,11 +52,12 @@ class ProfileController extends Controller
 
             // Penanganan unggahan avatar baru
             if ($request->hasFile('avatar')) {
-                if ($profile->avatar) {
-                    Storage::disk('public')->delete($profile->avatar);
+                if ($profile->avatar_path) {
+                    Storage::disk('public')->delete($profile->avatar_path);
                 }
-                $data['avatar'] = $request->file('avatar')->store('avatars', 'public');
+                $data['avatar_path'] = $request->file('avatar')->store('avatars', 'public');
             }
+            
 
             $profile->update($data);
 
